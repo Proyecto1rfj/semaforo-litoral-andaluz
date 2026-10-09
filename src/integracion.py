@@ -123,7 +123,7 @@ def construir_panel() -> pd.DataFrame:
         dias_con_dato=("hs", "count"),
     )
     c = cop.groupby(["tramo", "trimestre"]).agg(
-        nivel_max=("nivel", "max"),
+        nivel_p95=("nivel", _p95),
         corriente_media=("corriente", "mean"),
     )
     panel = s.join(c, how="outer").reset_index()

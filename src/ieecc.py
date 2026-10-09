@@ -30,8 +30,14 @@ def normalizar(panel: pd.DataFrame) -> pd.DataFrame:
     panel = panel.copy()
     train = panel[panel["anio"].between(*C.ANIOS_TRAIN)]
     for c in IND:
-        lo, hi = train[c].min(), train[c].max()
-        panel[c + "_n"] = ((panel[c] - lo) / (hi - lo)).clip(0, 1)
+        if getattr(C, "NORMALIZACION", "minmax") == "percentiles":
+            # posición de cada valor en la distribución de entrenamiento (0 a 1); un extremo aislado
+            # no comprime al resto, como ocurre con mínimo y máximo
+            ref = np.sort(train[c].dropna().values)
+            panel[c + "_n"] = np.where(panel[c].notna(), np.searchsorted(ref, panel[c].values, side="right") / len(ref), np.nan)
+        else:
+            lo, hi = train[c].min(), train[c].max()
+            panel[c + "_n"] = ((panel[c] - lo) / (hi - lo)).clip(0, 1)
         faltan = panel[c + "_n"].isna().sum()
         if faltan:
             print(f"  {c}: {faltan} observaciones sin dato, se asigna el valor medio 0,5")
@@ -78,7 +84,7 @@ def tasa_cambio_temporal(panel: pd.DataFrame) -> float:
 def sensibilidad(panel: pd.DataFrame):
     base = calcular_ieecc(panel, pesos_iguales())
     escenarios = {"Pesos de entropía": (pesos_entropia(panel), C.CORTES_TERCILES)}
-    nombres = {"hs_p95_n": "oleaje", "nivel_max_n": "nivel del mar",
+    nombres = {"hs_p95_n": "oleaje", "nivel_p95_n": "nivel del mar",
                "viento_p95_n": "viento", "corriente_media_n": "corrientes"}
     for c in IND_N:
         escenarios[f"Peso de {nombres.get(c, c)} x2"] = (pesos_escalados(c, 2.0), C.CORTES_TERCILES)
@@ -92,8 +98,11 @@ def sensibilidad(panel: pd.DataFrame):
         rho = np.mean([spearmanr(base.loc[i, "ieecc"], alt.loc[i, "ieecc"])[0]
                        for i in base.groupby("trimestre").groups.values()])
         pct = 100 * cambia.mean()
+        salto = 100 * (np.abs(base["clase"].values - alt["clase"].values) == 2).mean()
+        alta = 100 * ((base["clase"].values == 2) != (alt["clase"].values == 2)).mean()
         filas.append({"escenario": nombre, "pct_cambio_clase_vs_base": round(pct, 1),
-                      "cumple_meta_<20%": pct < META_CAMBIO, "spearman_medio_ieecc": round(rho, 3)})
+                      "cumple_meta_<20%": pct < META_CAMBIO, "spearman_medio_ieecc": round(rho, 3),
+                      "pct_salto_alta_baja": round(salto, 1), "pct_entra_o_sale_de_alta": round(alta, 1)})
         cambios_tramo.append(pd.Series(cambia, index=base["tramo"]).groupby(level=0).mean().rename(nombre))
     tabla = pd.DataFrame(filas)
     # Tramos que más cambian de clase entre escenarios (los cercanos a los cortes)

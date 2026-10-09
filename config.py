@@ -16,7 +16,7 @@ ANIOS_TEST = (2022, 2024)
 # extremos por trimestre porque el daño lo producen los temporales más que las condiciones medias
 INDICADORES = {
     "hs_p95": "Oleaje: altura significativa, percentil 95 del máximo diario (m)",
-    "nivel_max": "Nivel del mar no astronómico: máximo del trimestre (m)",
+    "nivel_p95": "Nivel del mar no astronómico: percentil 95 del máximo diario (m)",
     "viento_p95": "Viento: velocidad, percentil 95 (m/s)",
     "corriente_media": "Corrientes no astronómicas: velocidad media (m/s)",
 }
@@ -26,6 +26,9 @@ INDICADORES = {
 NIVEL_INDICE = "no_astronomico"
 # Laboratorio v2: corrientes sin la corriente de marea (src/marea_v2.py corrientes). "total" = versión 1.
 CORRIENTE_INDICE = "no_astronomico"
+# Normalización de los indicadores: "percentiles" (posición en la distribución 2000-2018, robusta a un
+# extremo aislado) o "minmax" (versión 1).
+NORMALIZACION = "minmax"
 
 # Indicador auxiliar (se calcula y se muestra, pero no entra al índice)
 AUXILIARES = {"dias_temporal": "Días con Hs sobre el umbral de temporal"}

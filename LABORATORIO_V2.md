@@ -38,6 +38,23 @@ Tendencias 2000-2024: el viento baja en 10 de 40 tramos (mediana −0,23 m/s por
 - La persistencia pierde ventaja. Con intervalos de confianza, Random Forest y LambdaMART ya no se distinguen de ella en NDCG ni en sensibilidad de la clase alta. La hipótesis nula del Capítulo 1 sigue sin rechazarse, pero ahora por empate y no por derrota clara.
 - La alerta de mareas vivas aporta poco: la pleamar máxima de un trimestre varía solo unos centímetros entre años. La marea pesa más como diferencia fija entre tramos (1,7 m en Huelva contra 0,7 m en Tarifa) que como señal del trimestre siguiente. La parte útil de la alerta es la estación de temporales: en la prueba, el 98 % de los trimestres en alerta alta tuvo temporal, contra 21 % de los sin alerta.
 
+## Ajuste de robustez (segunda corrida del laboratorio)
+
+Para bajar la sensibilidad a los pesos se probaron dos cambios que se justifican por robustez, no por la meta: el nivel del mar con el percentil 95 del máximo diario (igual que oleaje y viento) en vez del máximo del trimestre, y la normalización por percentiles en vez de mínimo y máximo.
+
+| Indicador | v2 inicial | v2 + nivel p95 + percentiles | v2 + nivel p95 (configuración final) |
+|---|---|---|---|
+| Escenarios de sensibilidad que cumplen | 2 de 10 | 4 de 10 (*) | 3 de 10 |
+| Peor escenario | 43,4 % | 37,3 % | 42,1 % |
+| Saltos de alta a baja o al revés (peor escenario) | 5,7 % | 4,3 % | 5,7 % |
+| Tramos que cambian de clase entre trimestres | 38,3 % | 44,8 % | 36,3 % |
+| Persistencia en prueba (NDCG / sensibilidad alta) | 0,979 / 0,865 | 0,967 / 0,673 | 0,976 / 0,808 |
+| LambdaMART en prueba (NDCG / sensibilidad alta) | 0,967 / 0,859 | 0,975 / 0,692 | 0,972 / 0,821 |
+
+(*) Con normalización por percentiles todos los indicadores quedan con distribución uniforme y los pesos de entropía salen iguales a los de caso base, así que ese escenario cumple de forma trivial: en rigor son 3 de 9. Además el índice se vuelve más inestable entre trimestres y la persistencia cae a una exactitud balanceada de 0,618. Por eso se descarta.
+
+Configuración final del laboratorio: nivel del mar p95, normalización mínimo-máximo (`NORMALIZACION = "minmax"`). Con ella ningún modelo se distingue de la persistencia en la prueba (todos los intervalos de la diferencia incluyen el cero); LambdaMART la supera en sensibilidad de la clase alta (0,821 contra 0,808) y queda bajo en NDCG (0,972 contra 0,976). Con el nivel p95 aparece una tendencia significativa del nivel del mar en 27 de 40 tramos (mediana +1,9 cm por década), coherente con el alza del nivel medio.
+
 ## Qué queda pendiente
 
 - Validación del índice con daños o eventos reales (necesita datos externos).
