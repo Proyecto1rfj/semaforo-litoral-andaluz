@@ -7,8 +7,9 @@ El semáforo ordena los tramos del litoral atlántico de Andalucía (de la desem
 ## Estado actual (9 de octubre de 2026)
 
 - Corre de punta a punta con **datos reales** 2000 a 2024 para 40 tramos provisorios.
-- Resultados frente a la Tabla 1 del Capítulo 1: OE1 cumple (100 % de cobertura), OE4 cumple (4 componentes del panel), OE2 cumple en 2 de 10 escenarios de sensibilidad y en OE3 ningún modelo supera a la persistencia (se aplica el plan B previsto). LambdaMART queda muy cerca.
-- Causa identificada: el indicador de nivel del mar está dominado por la marea astronómica. Próximo paso propuesto: usar nivel del mar sin marea (Copernicus, serie diaria) y volver a correr.
+- El nivel del mar del índice es ahora el **no astronómico** (residuo meteorológico): se le resta a la serie horaria de Copernicus la marea astronómica ajustada por análisis armónico con 2000-2018 (`src/marea.py`, UTide). Con el nivel total, la marea dominaba el indicador y lo ponía en contra del oleaje (correlación −0,12); sin marea la correlación con el oleaje es 0,71.
+- Resultados frente a la Tabla 1 del Capítulo 1: OE1 cumple (100 % de cobertura), OE2 cumple en 8 de 10 escenarios de sensibilidad (antes 2 de 10; fallan nivel x2 con 27,5 % y viento x2 con 22,2 %), OE4 cumple. En OE3 los modelos mejoran mucho en prueba (Random Forest: exactitud balanceada 0,754 y sensibilidad de clase alta 0,897, antes 0,645 y 0,756), pero la persistencia sigue arriba (0,782 y 0,936), así que se mantiene el plan B.
+- La parte de Tarifa (T35 a T40) queda casi siempre en clase alta, por el oleaje y las corrientes del Estrecho.
 - Pendientes del grupo: segmentación definitiva de tramos de 10 km, fuente del viento (SIMAR o Copernicus) y ajustes al texto del Capítulo 1.
 
 El detalle está en [`docs/resumen_semaforo_grupo3.pdf`](docs/resumen_semaforo_grupo3.pdf). Una vista del semáforo con los resultados actuales está en [`docs/semaforo_vista_estatica.html`](docs/semaforo_vista_estatica.html) (descargarla y abrirla en el navegador).
@@ -40,6 +41,7 @@ Solo hacen falta para reprocesar desde cero (por ejemplo, si cambian los tramos 
 
 ```bash
 python -m src.descarga procesar    # regenera copernicus_diario.csv y redmar_diario.csv
+python -m src.marea                # nivel del mar no astronómico (unos 10 minutos)
 python ejecutar_todo.py
 ```
 

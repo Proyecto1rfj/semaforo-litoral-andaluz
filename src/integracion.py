@@ -77,6 +77,14 @@ def leer_nivel_corriente() -> pd.DataFrame:
         d = d.merge(tr, on="celda_copernicus").drop(columns="celda_copernicus")
         return d.assign(nivel_medio=d["nivel"])
     d = pd.read_csv(C.RAW / "copernicus_diario.csv", parse_dates=["fecha"])
+    f_nt = C.RAW / "nivel_no_astronomico.csv"
+    if getattr(C, "NIVEL_INDICE", "total") == "no_astronomico":
+        if not f_nt.exists():
+            raise FileNotFoundError("Falta nivel_no_astronomico.csv: correr  python -m src.marea")
+        nt = pd.read_csv(f_nt, parse_dates=["fecha"])[["fecha", "tramo", "nivel_nt"]]
+        # el índice usa el máximo diario del residuo meteorológico; nivel_medio (total) queda
+        # para la validación contra REDMAR
+        d = d.drop(columns="nivel").merge(nt, on=["fecha", "tramo"], how="left").rename(columns={"nivel_nt": "nivel"})
     return d[["fecha", "tramo", "nivel", "nivel_medio", "corriente"]]
 
 

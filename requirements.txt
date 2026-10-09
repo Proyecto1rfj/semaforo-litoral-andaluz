@@ -14,5 +14,6 @@ jupyter>=1.0
 xarray>=2024.1
 dask>=2024.1
 netCDF4>=1.6
+utide>=0.3
 copernicusmarine>=2.0
 geopandas>=0.14
