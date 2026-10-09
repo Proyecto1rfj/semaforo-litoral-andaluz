@@ -36,7 +36,7 @@ Los notebooks de `notebooks/` recorren lo mismo paso a paso, con tablas para rev
 Solo hacen falta para reprocesar desde cero (por ejemplo, si cambian los tramos o se agrega una variable). Para correr el modelo y el panel basta con lo que ya trae el repositorio.
 
 - **REDMAR**: la caché mensual (Huelva, Bonanza y Tarifa) ya está en `data/raw/redmar/meses/`.
-- **Copernicus IBI** (unos 2,4 GB en netCDF): está en la sección *Releases* del repositorio, versión `datos-2026-10`, en varios zip (`copernicus_oleaje_1.zip`, `copernicus_nivel_1.zip`, etc.). Se descargan todos y se descomprimen en la raíz del repositorio; cada zip ya trae la ruta `data/raw/copernicus/<grupo>/Txx.nc`. Después:
+- **Copernicus IBI** (unos 2,5 GB en netCDF): un solo archivo, `datos_crudos_copernicus.zip`, en la carpeta compartida del grupo (enlace: PENDIENTE). Se descomprime en la raíz del repositorio; ya trae la ruta `data/raw/copernicus/<grupo>/Txx.nc`. Después:
 
 ```bash
 python -m src.descarga procesar    # regenera copernicus_diario.csv y redmar_diario.csv
