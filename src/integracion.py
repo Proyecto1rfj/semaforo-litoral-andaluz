@@ -85,6 +85,9 @@ def leer_nivel_corriente() -> pd.DataFrame:
         # el índice usa el máximo diario del residuo meteorológico; nivel_medio (total) queda
         # para la validación contra REDMAR
         d = d.drop(columns="nivel").merge(nt, on=["fecha", "tramo"], how="left").rename(columns={"nivel_nt": "nivel"})
+    if getattr(C, "CORRIENTE_INDICE", "total") == "no_astronomico":
+        cn = pd.read_csv(C.RAW / "corrientes_no_astronomicas.csv", parse_dates=["fecha"])[["fecha", "tramo", "corriente_nt"]]
+        d = d.drop(columns="corriente").merge(cn, on=["fecha", "tramo"], how="left").rename(columns={"corriente_nt": "corriente"})
     return d[["fecha", "tramo", "nivel", "nivel_medio", "corriente"]]
 
 

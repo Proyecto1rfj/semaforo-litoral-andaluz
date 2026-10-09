@@ -18,12 +18,14 @@ INDICADORES = {
     "hs_p95": "Oleaje: altura significativa, percentil 95 del máximo diario (m)",
     "nivel_max": "Nivel del mar no astronómico: máximo del trimestre (m)",
     "viento_p95": "Viento: velocidad, percentil 95 (m/s)",
-    "corriente_media": "Corrientes: velocidad media (m/s)",
+    "corriente_media": "Corrientes no astronómicas: velocidad media (m/s)",
 }
 # Qué nivel del mar entra al índice: "no_astronomico" (residuo meteorológico, sin marea astronómica,
 # src/marea.py) o "total" (zos del reanálisis con marea). La marea astronómica es predecible y crece
 # de Tarifa a Huelva; con "total" dominaba el indicador y fijaba un gradiente que no es exposición.
 NIVEL_INDICE = "no_astronomico"
+# Laboratorio v2: corrientes sin la corriente de marea (src/marea_v2.py corrientes). "total" = versión 1.
+CORRIENTE_INDICE = "no_astronomico"
 
 # Indicador auxiliar (se calcula y se muestra, pero no entra al índice)
 AUXILIARES = {"dias_temporal": "Días con Hs sobre el umbral de temporal"}

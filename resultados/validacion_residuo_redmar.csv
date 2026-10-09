@@ -1,0 +1,4 @@
+estacion,dias,corr_residuo_max_diario,corr_residuo_medio_diario,rmse_residuo_max_m,eventos_p99,eventos_p99_tambien_p95_en_reanalisis
+Huelva,5990,0.926,0.945,0.039,60,0.933
+Bonanza,5182,0.881,0.918,0.051,52,0.885
+Tarifa,5366,0.813,0.825,0.049,54,1.0

@@ -1,7 +1,7 @@
 modelo,exactitud_balanceada,f1_macro,sensibilidad_alta,precision_alta,ndcg@10,precision@10,spearman_ranking,hiperparametros
-Random Forest,0.748,0.747,0.904,0.979,0.976,1.0,0.856,"{""max_depth"": 8, ""min_samples_leaf"": 5}"
-SVM,0.755,0.747,0.885,0.986,0.925,1.0,0.838,"{""C"": 0.5, ""gamma"": ""scale""}"
-XGBoost,0.75,0.751,0.891,1.0,0.98,1.0,0.849,"{""max_depth"": 3, ""min_child_weight"": 5, ""n_estimators"": 240}"
-LambdaMART,0.716,0.716,0.904,0.904,0.981,1.0,0.827,"{""num_leaves"": 15, ""min_child_samples"": 20, ""learning_rate"": 0.05, ""n_estimators"": 13}"
-Persistencia,0.706,0.706,0.942,0.942,0.996,1.0,0.812,
-Clase mayoritaria,0.333,0.173,0.0,0.0,0.662,0.008,,
+Random Forest,0.709,0.711,0.75,0.907,0.952,0.925,0.773,"{""max_depth"": 8, ""min_samples_leaf"": 5}"
+SVM,0.657,0.655,0.705,0.932,0.953,0.908,0.706,"{""C"": 4, ""gamma"": 0.05}"
+XGBoost,0.642,0.636,0.679,0.906,0.959,0.933,0.795,"{""max_depth"": 3, ""min_child_weight"": 5, ""n_estimators"": 235}"
+LambdaMART,0.682,0.682,0.827,0.827,0.957,0.933,0.753,"{""num_leaves"": 7, ""min_child_samples"": 50, ""learning_rate"": 0.05, ""n_estimators"": 56}"
+Persistencia,0.7,0.7,0.84,0.84,0.979,0.933,0.802,
+Clase mayoritaria,0.333,0.173,0.0,0.0,0.807,0.15,,

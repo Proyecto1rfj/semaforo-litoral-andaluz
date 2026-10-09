@@ -301,7 +301,9 @@ def ejecutar():
         filas_te.append(evaluar(m, te, matrices, "prueba 2022-2024"))
         o = te[["tramo", "trimestre_objetivo", "clase", "clase_t1"]].copy()
         o["modelo"] = nombre
-        o["clase_pred"] = _clase_pred(m, te, m.score(te))
+        o["puntaje"] = m.score(te)
+        o["ieecc_t1"] = te["ieecc_t1"].values
+        o["clase_pred"] = _clase_pred(m, te, o["puntaje"].values)
         pred_todos.append(o)
     prueba = pd.DataFrame(filas_te).round(3)
     cambios = analizar_cambios(pd.concat(pred_todos))

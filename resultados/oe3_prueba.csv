@@ -1,7 +1,7 @@
 modelo,exactitud_balanceada,f1_macro,sensibilidad_alta,precision_alta,ndcg@10,precision@10,spearman_ranking,supera_persistencia_ndcg_y_sens
-Random Forest,0.754,0.752,0.897,0.959,0.98,1.0,0.854,False
-SVM,0.742,0.738,0.859,0.971,0.915,0.975,0.833,False
-XGBoost,0.737,0.736,0.872,0.986,0.98,1.0,0.84,False
-LambdaMART,0.692,0.692,0.885,0.885,0.978,0.983,0.837,False
-Persistencia,0.782,0.782,0.936,0.936,0.994,0.992,0.868,False
-Clase mayoritaria,0.333,0.173,0.0,0.0,0.648,0.0,,False
+Random Forest,0.692,0.693,0.808,0.894,0.959,0.967,0.837,False
+SVM,0.685,0.687,0.782,0.931,0.952,0.942,0.737,False
+XGBoost,0.674,0.677,0.744,0.913,0.964,0.958,0.834,False
+LambdaMART,0.744,0.744,0.859,0.859,0.967,0.958,0.83,False
+Persistencia,0.767,0.767,0.865,0.865,0.979,0.933,0.848,False
+Clase mayoritaria,0.333,0.173,0.0,0.0,0.782,0.133,,False
