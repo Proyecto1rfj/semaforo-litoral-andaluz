@@ -18,7 +18,7 @@ Esta rama sigue el Capítulo 1 versión 3. La versión anterior quedó en la ram
 - **Tendencias 2000-2024:** el nivel del mar no astronómico sube en 15 de 23 tramos (mediana +1,9 cm por década) y el viento baja en 5.
 - **Pendiente:** enlace al zip de datos crudos.
 
-Detalle de las pruebas que llevaron a esta versión: [`docs/laboratorio_v3_historial.md`](docs/laboratorio_v3_historial.md).
+Qué cambió respecto del Capítulo 1 entregado y por qué es más robusto: [`docs/cambios_capitulo1.md`](docs/cambios_capitulo1.md). Detalle de las pruebas que llevaron a esta versión: [`docs/laboratorio_v3_historial.md`](docs/laboratorio_v3_historial.md).
 
 ## Cómo correrlo
 
