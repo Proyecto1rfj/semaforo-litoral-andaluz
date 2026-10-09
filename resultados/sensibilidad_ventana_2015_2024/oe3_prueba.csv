@@ -1,7 +1,0 @@
-modelo,exactitud_balanceada,f1_macro,sensibilidad_alta,precision_alta,ndcg@10,precision@10,spearman_ranking,supera_persistencia_ndcg_y_sens
-Random Forest,0.714,0.715,0.904,0.959,0.957,0.983,0.84,False
-SVM,0.697,0.698,0.897,0.946,0.959,0.983,0.788,False
-XGBoost,0.707,0.706,0.904,0.953,0.974,1.0,0.83,False
-LambdaMART,0.738,0.738,0.904,0.904,0.98,0.983,0.844,False
-Persistencia,0.78,0.78,0.917,0.917,0.994,0.992,0.864,False
-Clase mayoritaria,0.333,0.173,0.0,0.0,0.629,0.0,,False
