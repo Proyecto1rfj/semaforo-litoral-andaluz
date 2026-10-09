@@ -8,15 +8,15 @@ El semáforo ordena los tramos del litoral atlántico de Andalucía (de la desem
 
 Esta rama sigue el Capítulo 1 versión 3. La versión anterior quedó en la rama `version-1`.
 
-- Corre de punta a punta con **datos reales** 2000 a 2024 para 40 tramos provisorios.
+- Corre de punta a punta con **datos reales** 2000 a 2024 para **23 tramos de unos 10 km** (Capítulo 1). La segmentación anterior de 40 puntos quedó en la rama `tramos-40`; la comparación está en [`docs/segmentacion_10km.md`](docs/segmentacion_10km.md).
 - **La marea astronómica se trata en tres capas.** Se resta del nivel del mar y de las corrientes (análisis armónico con UTide, ajustado con 2000-2018), se cuentan los días de temporal en pleamar viva como quinto indicador y la pleamar viva prevista para el trimestre siguiente entra al modelo, porque se conoce de antemano.
-- **OE1:** 100 % de cobertura. El residuo meteorológico del reanálisis coincide con el de los mareógrafos (correlación 0,93 en Huelva, 0,88 en Bonanza y 0,81 en Tarifa).
-- **OE2:** 4 de los 10 escenarios originales cumplen la meta de menos de 20 % de cambio de clase (más los 2 del nuevo indicador). Los saltos entre alta y baja no pasan de 3,5 %. Se informa como limitación: sin la marea, la exposición del litoral es más pareja entre tramos.
-- **OE3:** en la prueba 2022-2024, LambdaMART supera a la persistencia en NDCG@10 (0,976 contra 0,972) y en sensibilidad de la clase alta (0,859 contra 0,840), pero la diferencia no es significativa y en validación la persistencia sigue arriba. Por el criterio del Capítulo 1, la persistencia queda como referencia operativa. Cuando un tramo cambia de clase, los modelos aciertan entre 41 % y 43 %; la persistencia, nunca.
-- **OE4:** panel con ranking, mapa semáforo, mapa de calor, ficha por tramo y alerta del trimestre siguiente (estación de temporales y pleamares vivas).
-- **Tendencias 2000-2024:** el nivel del mar no astronómico sube en 27 de 40 tramos (mediana +1,9 cm por década) y el viento baja en 10.
-- **Validación con daños reales** (`src/validacion_danos.py`, 34 tramos con obras de emergencia por temporal en 2015, 2016, 2018 y 2024, con fuentes en `data/validacion/eventos_temporales.csv`): en el tiempo, el índice acierta. El trimestre del daño queda en el percentil 86 de la historia del propio tramo (Emma 2018: percentil 99,6), y en el 94 % de los casos los días de temporal en pleamar viva están en el 25 % superior (permutación, p < 0,001). En el espacio, la señal es débil: el 41 % de los tramos dañados estaba en prioridad alta frente al 33 % esperado al azar. El índice detecta cuándo la exposición es extrema, pero el lugar del daño también depende de la vulnerabilidad de cada frente costero, que el índice no mide.
-- **Pendientes:** segmentación definitiva de 10 km y enlace al zip de datos crudos.
+- **OE1:** 100 % de cobertura; cada tramo tiene su propia celda del reanálisis. El residuo meteorológico coincide con el de los mareógrafos (correlación 0,93 en Huelva, 0,88 en Bonanza y 0,81 en Tarifa).
+- **OE2:** 3 de los 10 escenarios originales cumplen la meta de menos de 20 % de cambio de clase (más los 2 del nuevo indicador); los saltos entre alta y baja no pasan de 5,3 %. Se informa como limitación: sin la marea, la exposición del litoral es pareja entre tramos.
+- **OE3:** en la prueba 2022-2024, LambdaMART supera a la persistencia en exactitud balanceada (0,635 contra 0,595) y en sensibilidad de la clase alta (0,677 contra 0,646), y queda apenas bajo en NDCG de los 6 primeros (0,954 contra 0,959). Nada es estadísticamente significativo y en validación no la supera en ambas métricas, así que la persistencia queda como referencia operativa.
+- **Validación con daños reales** (`src/validacion_danos.py`, obras de emergencia por temporal 2015-2024, fuentes en `data/validacion/eventos_temporales.csv`): el trimestre del daño queda en el percentil 86 de la historia del propio tramo (permutación, p < 0,001), pero solo el 31 % de los tramos dañados estaba en prioridad alta frente al resto (azar: 33 %). El índice detecta cuándo la exposición es extrema; dónde ocurre el daño depende también de la vulnerabilidad de cada frente, que el índice no mide.
+- **OE4:** panel con ranking, mapa semáforo, mapa de calor, ficha por tramo y alerta del trimestre siguiente.
+- **Tendencias 2000-2024:** el nivel del mar no astronómico sube en 15 de 23 tramos (mediana +1,9 cm por década) y el viento baja en 5.
+- **Pendiente:** enlace al zip de datos crudos.
 
 Detalle de las pruebas que llevaron a esta versión: [`docs/laboratorio_v3_historial.md`](docs/laboratorio_v3_historial.md).
 
@@ -61,7 +61,8 @@ Fuentes: E.U. Copernicus Marine Service Information (reanálisis IBI de oleaje y
 | Archivo | OE | Qué hace |
 |---|---|---|
 | `config.py` | todos | Ventana, partición, indicadores, umbrales e interruptores de la versión 3 (`NIVEL_INDICE`, `CORRIENTE_INDICE`, `NORMALIZACION`, `COINCIDENCIA`) |
-| `src/tramos.py` | OE1 | Segmentación preliminar de los 40 tramos y mareógrafos REDMAR |
+| `src/tramos.py` | OE1 | Segmentación en tramos de 10 km (y la anterior de 40 puntos) y mareógrafos REDMAR |
+| `src/celdas_10km.py` | OE1 | Arma la celda de Copernicus de cada tramo de 10 km desde las descargas existentes |
 | `src/descarga.py` | OE1 | Descarga Copernicus y REDMAR y las procesa a series diarias |
 | `src/marea.py` | OE1 | Nivel del mar no astronómico |
 | `src/marea_v2.py` | OE1 | Corrientes sin marea, marea prevista y validación del residuo con REDMAR |
@@ -104,7 +105,8 @@ Pasos:
 source .venv/bin/activate
 pip install -r requirements.txt
 copernicusmarine login                 # una vez, con el usuario de marine.copernicus.eu
-python -m src.descarga copernicus      # 40 tramos × 4 grupos (reanudable)
+python -m src.descarga copernicus      # cajas por tramo × 4 grupos (reanudable)
+python -m src.celdas_10km              # una celda de mar por tramo de 10 km
 python -m src.descarga redmar          # lo más lento: miles de archivos diarios (reanudable)
 python -m src.descarga procesar        # deja copernicus_diario.csv y redmar_diario.csv
 python ejecutar_todo.py                # desde aquí el flujo usa datos reales
@@ -115,7 +117,7 @@ Cuando existe `data/raw/copernicus_diario.csv`, `config.MODO` pasa a `"real"` y 
 
 **SIMAR.** Portus no ofrece descarga automática (y al 8-oct-2026 su API respondía con error). Los archivos se bajan desde https://portus.puertos.es > Datos Históricos > Oleaje y se dejan en `data/raw/simar/`. El nombre de cada archivo debe contener el código que figura en la columna `punto_simar` de `tramos.csv` (hay que reemplazar los códigos provisionales SIMAR_01... por los reales). Los tramos con archivo SIMAR usan SIMAR; el resto sigue con Copernicus.
 
-**Tramos.** `tramos.csv` es una segmentación preliminar: 40 puntos equiespaciados entre Ayamonte y Tarifa. Cuando el grupo cierre la segmentación, se reemplaza el archivo manteniendo las columnas y se vuelve a descargar.
+**Tramos.** `tramos.csv` tiene 23 tramos de unos 10 km sobre una poligonal simplificada de la costa (226 km). Los netCDF de cada tramo se arman con `python -m src.celdas_10km` a partir de `data/raw/copernicus/` y quedan en `data/raw/copernicus_10km/`.
 
 **Notas de método:**
 - Las series horarias se resumen a diarias: Hs y nivel no astronómico con el máximo diario, Tp y corriente no astronómica con la media.

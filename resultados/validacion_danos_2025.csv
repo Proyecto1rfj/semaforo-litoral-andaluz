@@ -1,5 +1,5 @@
 lugar,municipio,tramo,dist_km,ranking,alerta,clase_pronosticada
-Camposoto,San Fernando,T27,2.3,15,media,media
-Santa Catalina,El Puerto de Santa María,T24,5.0,32,media,baja
-Aguadulce,Rota,T23,2.3,10,media,alta
-El Palmar,Vejer de la Frontera,T32,4.4,4,alta,alta
+Camposoto,San Fernando,T16,1.0,9,media,media
+Santa Catalina,El Puerto de Santa María,T14,4.8,19,media,baja
+Aguadulce,Rota,T13,2.9,4,media,alta
+El Palmar,Vejer de la Frontera,T19,5.2,2,media,alta

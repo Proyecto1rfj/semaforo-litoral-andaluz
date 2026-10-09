@@ -38,7 +38,7 @@ from src.tramos import REDMAR, generar_tramos
 
 INICIO, FIN = "2000-01-01T00:00:00", "2024-12-31T23:00:00"
 CAJA = 0.04          # grados alrededor del punto del tramo
-DIR_COP = C.RAW / "copernicus"
+DIR_COP = C.RAW / getattr(C, "COPERNICUS_DIR", "copernicus")
 DIR_RED = C.RAW / "redmar"
 
 GRUPOS = {

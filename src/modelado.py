@@ -297,8 +297,15 @@ def ejecutar():
     ndcg_col = f"ndcg@{C.K_NDCG}"
     cand = val[~val.modelo.isin(["Persistencia", "Clase mayoritaria"])].sort_values(
         [ndcg_col, "sensibilidad_alta"], ascending=False).iloc[0]
-    ref = val.loc[val.modelo == "Persistencia", ndcg_col].iloc[0]
-    elegido = cand.modelo if cand[ndcg_col] > ref else "Persistencia"
+    # Tabla 1 del Capítulo 1: el modelo debe superar a la persistencia en NDCG y en sensibilidad de la
+    # clase alta; la selección se hace en validación
+    per_val = val.set_index("modelo").loc["Persistencia"]
+    ref = per_val[ndcg_col]
+    supera = val[(~val.modelo.isin(["Persistencia", "Clase mayoritaria"])) & (val[ndcg_col] > ref)
+                 & (val["sensibilidad_alta"] > per_val["sensibilidad_alta"])]
+    if len(supera):
+        cand = supera.sort_values([ndcg_col, "sensibilidad_alta"], ascending=False).iloc[0]
+    elegido = cand.modelo if len(supera) else "Persistencia"
 
     # 3. Reentrenar con 2000-2021 y evaluar todos en prueba (2022-2024)
     def nuevo(nombre):

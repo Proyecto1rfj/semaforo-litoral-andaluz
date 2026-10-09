@@ -1,13 +1,13 @@
 escenario,pct_cambio_clase_vs_base,cumple_meta_<20%,spearman_medio_ieecc,pct_salto_alta_baja,pct_entra_o_sale_de_alta
-Pesos de entropía,20.1,False,0.903,1.1,11.0
-Peso de oleaje x2,22.3,False,0.885,0.7,9.4
-"Peso de oleaje x0,5",18.2,True,0.924,0.6,8.3
-Peso de nivel del mar x2,26.0,False,0.856,1.5,12.2
-"Peso de nivel del mar x0,5",8.0,True,0.983,0.0,3.0
-Peso de viento x2,23.4,False,0.861,1.6,11.0
-"Peso de viento x0,5",22.5,False,0.897,0.8,13.2
-Peso de corrientes x2,37.6,False,0.762,3.5,23.2
-"Peso de corrientes x0,5",18.1,True,0.924,0.5,8.5
-Peso de temporal en pleamar viva x2,8.0,True,0.969,0.2,4.4
-"Peso de temporal en pleamar viva x0,5",5.3,True,0.985,0.0,2.8
-Corte 25/50/25,17.5,True,1.0,0.0,7.5
+Pesos de entropía,23.1,False,0.868,1.9,14.0
+Peso de oleaje x2,33.1,False,0.831,1.7,19.1
+"Peso de oleaje x0,5",18.3,True,0.94,0.0,9.1
+Peso de nivel del mar x2,24.4,False,0.894,1.0,12.2
+"Peso de nivel del mar x0,5",8.2,True,0.984,0.0,4.4
+Peso de viento x2,31.3,False,0.798,2.7,19.5
+"Peso de viento x0,5",25.8,False,0.871,1.2,14.3
+Peso de corrientes x2,41.0,False,0.705,5.3,22.9
+"Peso de corrientes x0,5",31.8,False,0.83,1.8,19.7
+Peso de temporal en pleamar viva x2,11.4,True,0.951,0.4,7.2
+"Peso de temporal en pleamar viva x0,5",8.3,True,0.976,0.1,4.4
+Corte 25/50/25,17.4,True,1.0,0.0,8.7

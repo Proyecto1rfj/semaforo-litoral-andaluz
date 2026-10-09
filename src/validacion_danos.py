@@ -130,5 +130,6 @@ if __name__ == "__main__":
     e25["tramo"], e25["dist_km"] = _tramo_mas_cercano(e25, tramos)
     p25 = pronostico_2025(e25)
     p25.to_csv(C.RESULTADOS / "validacion_danos_2025.csv", index=False)
-    print("\nFuera de muestra: daños de marzo de 2025 frente al pronóstico 2025-T1 (persistencia, datos hasta 2024-T4)")
+    import json; _m = json.loads((C.RESULTADOS / "modelo_elegido.json").read_text())["modelo_elegido"]
+    print(f"\nFuera de muestra: daños de marzo de 2025 frente al pronóstico 2025-T1 ({_m}, datos hasta 2024-T4)")
     print(p25.to_string(index=False))

@@ -1,13 +1,16 @@
-"""Segmentación preliminar del litoral atlántico andaluz en tramos (Ayamonte a Tarifa).
+"""Segmentación del litoral atlántico andaluz en tramos de unos 10 km (Ayamonte a Tarifa).
 
-Es una aproximación: 40 puntos equiespaciados sobre una poligonal de la costa. Cuando el
-grupo cierre la segmentación definitiva (Capítulo 1, pendiente), basta con reemplazar
-data/raw/tramos.csv manteniendo las columnas.
+La costa se representa con una poligonal simplificada; se mide su largo en kilómetros, se divide
+en tramos de LARGO_TRAMO_KM y cada tramo se representa por el punto medio de su segmento.
+Con 10 km cada tramo abarca unas tres celdas del reanálisis IBI (0,027°, unos 3 km), así que
+ningún par de tramos comparte celda, y la escala coincide con la de las obras de Costas.
+generar_tramos(n) mantiene la segmentación anterior de n puntos equiespaciados.
 """
 import numpy as np
 import pandas as pd
 
-N_TRAMOS = 40
+N_TRAMOS = 40          # segmentación anterior (puntos equiespaciados)
+LARGO_TRAMO_KM = 10   # segmentación del Capítulo 1
 
 COSTA = [
     ("Ayamonte", 37.20, -7.40), ("Isla Cristina", 37.19, -7.32), ("Punta Umbría", 37.17, -6.96),
@@ -42,5 +45,34 @@ def generar_tramos(n: int = N_TRAMOS) -> pd.DataFrame:
     est = list(REDMAR)
     d = np.array([[np.hypot(r.lat - REDMAR[e]["lat"], r.lon - REDMAR[e]["lon"]) for e in est]
                   for r in df.itertuples()])
+    df["estacion_redmar"] = [est[i] for i in d.argmin(1)]
+    return df
+
+
+def _km(lat, lon):
+    lat0 = np.radians(36.6)
+    return np.c_[np.asarray(lon) * 111.2 * np.cos(lat0), np.asarray(lat) * 111.2]
+
+
+def generar_tramos_km(largo_km: float = LARGO_TRAMO_KM) -> pd.DataFrame:
+    """Tramos de unos largo_km a lo largo de la poligonal; punto representativo = mitad del tramo."""
+    lat = np.array([c[1] for c in COSTA]); lon = np.array([c[2] for c in COSTA])
+    xy = _km(lat, lon)
+    dist = np.r_[0, np.cumsum(np.hypot(*np.diff(xy, axis=0).T))]
+    n = max(1, int(round(dist[-1] / largo_km)))
+    bordes = np.linspace(0, dist[-1], n + 1)
+    medios = (bordes[:-1] + bordes[1:]) / 2
+    t_lat, t_lon = np.interp(medios, dist, lat), np.interp(medios, dist, lon)
+    ref = [COSTA[np.argmin(np.abs(dist - p))][0] for p in medios]
+    df = pd.DataFrame({
+        "tramo": [f"T{i + 1:02d}" for i in range(n)],
+        "nombre": [f"{r} ({i + 1})" for i, r in enumerate(ref)],
+        "lat": t_lat.round(4), "lon": t_lon.round(4),
+        "km_inicio": bordes[:-1].round(1), "km_fin": bordes[1:].round(1),
+    })
+    df["punto_simar"] = [f"SIMAR_{i + 1:02d}" for i in range(n)]
+    df["celda_copernicus"] = [f"IBI_{i + 1:02d}" for i in range(n)]
+    est = list(REDMAR)
+    d = np.array([[np.hypot(r.lat - REDMAR[e]["lat"], r.lon - REDMAR[e]["lon"]) for e in est] for r in df.itertuples()])
     df["estacion_redmar"] = [est[i] for i in d.argmin(1)]
     return df

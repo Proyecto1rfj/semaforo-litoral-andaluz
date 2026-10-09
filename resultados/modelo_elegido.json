@@ -1,8 +1,8 @@
 {
   "modelo_elegido": "Persistencia",
   "hiperparametros": {},
-  "ndcg_val_candidato": 0.968,
-  "ndcg_val_persistencia": 0.972,
+  "ndcg_val_candidato": 0.96,
+  "ndcg_val_persistencia": 0.965,
   "plan_b_activado": true,
   "features": [
     "hs_p95_n",

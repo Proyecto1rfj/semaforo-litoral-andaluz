@@ -8,6 +8,11 @@ RESULTADOS = BASE / "resultados"
 
 # Ventana temporal y partición (Capítulo 1)
 INICIO, FIN = "2000-01-01", "2024-12-31"
+
+# Segmentación: tramos de unos 10 km (src/tramos.py). Los netCDF de cada tramo están en
+# data/raw/<COPERNICUS_DIR>; los de 10 km se arman desde las descargas anteriores (src/celdas_10km.py).
+LARGO_TRAMO_KM = 10
+COPERNICUS_DIR = "copernicus_10km"
 ANIOS_TRAIN = (2000, 2018)
 ANIOS_VALID = (2019, 2021)
 ANIOS_TEST = (2022, 2024)
@@ -52,8 +57,16 @@ CORTES_ALTERNATIVOS = [0, 0.25, 0.75, 1]   # sensibilidad 25/50/25
 CLASES = {0: "baja", 1: "media", 2: "alta"}
 COLORES = {0: "#2e9d5b", 1: "#e8b400", 2: "#d1373f"}
 
-K_NDCG = 10        # NDCG en los 10 primeros del ranking
-K_TOP = 10         # precisión en los primeros tramos: cuántos de los 10 primeros quedaron en clase alta
+# Primeros lugares del ranking que se evalúan: la cuarta parte de los tramos (10 de 40; 6 de 23),
+# para que la exigencia sea la misma con cualquier segmentación
+def _n_tramos():
+    try:
+        import pandas as _pd
+        return len(_pd.read_csv(RAW / "tramos.csv"))
+    except Exception:
+        return 40
+K_NDCG = max(3, round(_n_tramos() / 4))   # NDCG en los primeros K del ranking
+K_TOP = K_NDCG                            # precisión en los primeros K tramos
 PARADA_TEMPRANA = 30   # rondas sin mejora en validación (XGBoost y LambdaMART)
 SEMILLA = 42
 

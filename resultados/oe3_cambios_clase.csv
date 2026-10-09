@@ -1,7 +1,7 @@
 modelo,casos_con_cambio,acierto_en_cambios,detecta_subida_a_alta,detecta_salida_de_alta,acierto_sin_cambio
-Random Forest,120,0.417,0.4,0.36,0.764
-SVM,120,0.433,0.32,0.64,0.758
-XGBoost,120,0.408,0.28,0.64,0.753
-LambdaMART,120,0.425,0.44,0.4,0.828
-Persistencia,120,0.0,0.0,0.0,1.0
-Clase mayoritaria,120,0.333,0.0,1.0,0.356
+Random Forest,110,0.345,0.324,0.618,0.687
+SVM,110,0.327,0.235,0.588,0.663
+XGBoost,110,0.373,0.412,0.618,0.693
+LambdaMART,110,0.427,0.471,0.471,0.783
+Persistencia,110,0.0,0.0,0.0,1.0
+Clase mayoritaria,110,0.264,0.0,1.0,0.404

@@ -1,0 +1,41 @@
+tramo,nombre,lat,lon,punto_simar,celda_copernicus,estacion_redmar
+T01,Ayamonte (1),37.2,-7.4,SIMAR_01,IBI_01,Huelva
+T02,Isla Cristina (2),37.1925,-7.3403,SIMAR_02,IBI_02,Huelva
+T03,Isla Cristina (3),37.1878,-7.2804,SIMAR_03,IBI_03,Huelva
+T04,Isla Cristina (4),37.1845,-7.2204,SIMAR_04,IBI_04,Huelva
+T05,Isla Cristina (5),37.1811,-7.1603,SIMAR_05,IBI_05,Huelva
+T06,Punta Umbría (6),37.1778,-7.1003,SIMAR_06,IBI_06,Huelva
+T07,Punta Umbría (7),37.1745,-7.0403,SIMAR_07,IBI_07,Huelva
+T08,Punta Umbría (8),37.1711,-6.9802,SIMAR_08,IBI_08,Huelva
+T09,Punta Umbría (9),37.1583,-6.9219,SIMAR_09,IBI_09,Huelva
+T10,Mazagón (10),37.1406,-6.8644,SIMAR_10,IBI_10,Huelva
+T11,Mazagón (11),37.1195,-6.8082,SIMAR_11,IBI_11,Huelva
+T12,Mazagón (12),37.0934,-6.7541,SIMAR_12,IBI_12,Huelva
+T13,Mazagón (13),37.0674,-6.6999,SIMAR_13,IBI_13,Huelva
+T14,Matalascañas (14),37.0413,-6.6457,SIMAR_14,IBI_14,Huelva
+T15,Matalascañas (15),37.0152,-6.5915,SIMAR_15,IBI_15,Huelva
+T16,Matalascañas (16),36.9804,-6.5443,SIMAR_16,IBI_16,Bonanza
+T17,Matalascañas (17),36.9334,-6.5067,SIMAR_17,IBI_17,Bonanza
+T18,Desembocadura Guadalquivir (18),36.8865,-6.4692,SIMAR_18,IBI_18,Bonanza
+T19,Desembocadura Guadalquivir (19),36.8395,-6.4316,SIMAR_19,IBI_19,Bonanza
+T20,Desembocadura Guadalquivir (20),36.7921,-6.4053,SIMAR_20,IBI_20,Bonanza
+T21,Chipiona (21),36.742,-6.4387,SIMAR_21,IBI_21,Bonanza
+T22,Chipiona (22),36.692,-6.408,SIMAR_22,IBI_22,Bonanza
+T23,Rota (23),36.642,-6.3746,SIMAR_23,IBI_23,Bonanza
+T24,Rota (24),36.5919,-6.3413,SIMAR_24,IBI_24,Bonanza
+T25,Cádiz (25),36.5419,-6.3079,SIMAR_25,IBI_25,Bonanza
+T26,Cádiz (26),36.4923,-6.2739,SIMAR_26,IBI_26,Bonanza
+T27,Sancti Petri (27),36.4429,-6.2397,SIMAR_27,IBI_27,Bonanza
+T28,Sancti Petri (28),36.3943,-6.2043,SIMAR_28,IBI_28,Bonanza
+T29,Sancti Petri (29),36.3518,-6.1618,SIMAR_29,IBI_29,Bonanza
+T30,Conil (30),36.3093,-6.1193,SIMAR_30,IBI_30,Bonanza
+T31,Conil (31),36.2705,-6.0739,SIMAR_31,IBI_31,Tarifa
+T32,Conil (32),36.24,-6.0221,SIMAR_32,IBI_32,Tarifa
+T33,Barbate (33),36.2095,-5.9702,SIMAR_33,IBI_33,Tarifa
+T34,Barbate (34),36.179,-5.9184,SIMAR_34,IBI_34,Tarifa
+T35,Zahara (35),36.1471,-5.8674,SIMAR_35,IBI_35,Tarifa
+T36,Zahara (36),36.1176,-5.8151,SIMAR_36,IBI_36,Tarifa
+T37,Zahara (37),36.0907,-5.7614,SIMAR_37,IBI_37,Tarifa
+T38,Tarifa (38),36.0638,-5.7076,SIMAR_38,IBI_38,Tarifa
+T39,Tarifa (39),36.0369,-5.6538,SIMAR_39,IBI_39,Tarifa
+T40,Tarifa (40),36.01,-5.6,SIMAR_40,IBI_40,Tarifa

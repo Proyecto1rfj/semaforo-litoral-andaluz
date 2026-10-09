@@ -19,3 +19,6 @@ data/raw/*.log
 
 # Modelo serializado (se regenera al correr)
 resultados/*.joblib
+
+# netCDF de una celda por tramo (se arman con python -m src.celdas_10km desde data/raw/copernicus)
+data/raw/copernicus_10km/
