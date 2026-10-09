@@ -1,0 +1,21 @@
+# Entorno y temporales
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+
+# Descargas crudas (pesadas, se regeneran con: python -m src.descarga copernicus / redmar)
+data/raw/copernicus/
+data/raw/redmar/meses/
+*.nc
+*.nc4
+
+# Datos sintéticos de prueba (se regeneran con src/datos_sinteticos.py)
+data/raw/*_sintetico.csv
+
+# Logs de las corridas
+data/raw/*.log
+
+# Modelo serializado (se regenera al correr)
+resultados/*.joblib

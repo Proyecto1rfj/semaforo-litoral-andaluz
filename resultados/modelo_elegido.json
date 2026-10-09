@@ -1,0 +1,21 @@
+{
+  "modelo_elegido": "Persistencia",
+  "hiperparametros": {},
+  "ndcg_val_candidato": 0.993,
+  "ndcg_val_persistencia": 0.994,
+  "plan_b_activado": true,
+  "features": [
+    "hs_p95_n",
+    "nivel_max_n",
+    "viento_p95_n",
+    "corriente_media_n",
+    "hs_p95_n_lag1",
+    "nivel_max_n_lag1",
+    "viento_p95_n_lag1",
+    "corriente_media_n_lag1",
+    "q_1",
+    "q_2",
+    "q_3",
+    "q_4"
+  ]
+}

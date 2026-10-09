@@ -1,0 +1,7 @@
+modelo,exactitud_balanceada,f1_macro,sensibilidad_alta,precision_alta,ndcg@10,precision@10,spearman_ranking,hiperparametros
+Random Forest,0.648,0.655,0.692,0.915,0.991,0.9,0.795,"{""max_depth"": null, ""min_samples_leaf"": 20}"
+SVM,0.659,0.662,0.615,0.914,0.989,0.908,0.831,"{""C"": 0.5, ""gamma"": 0.05}"
+XGBoost,0.642,0.65,0.679,0.914,0.993,0.917,0.809,"{""max_depth"": 3, ""min_child_weight"": 1, ""n_estimators"": 217}"
+LambdaMART,0.681,0.681,0.827,0.827,0.993,0.917,0.839,"{""num_leaves"": 7, ""min_child_samples"": 20, ""learning_rate"": 0.05, ""n_estimators"": 106}"
+Persistencia,0.639,0.639,0.795,0.795,0.994,0.908,0.804,
+Clase mayoritaria,0.333,0.173,0.0,0.0,0.818,0.05,,
