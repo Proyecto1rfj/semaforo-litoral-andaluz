@@ -7,7 +7,7 @@ __pycache__/
 
 # Descargas crudas (pesadas, se regeneran con: python -m src.descarga copernicus / redmar)
 data/raw/copernicus/
-data/raw/redmar/meses/
+# data/raw/redmar/meses/ (ahora se versiona, pesa ~11 MB)
 *.nc
 *.nc4
 

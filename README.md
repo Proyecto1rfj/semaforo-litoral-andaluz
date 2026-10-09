@@ -31,6 +31,20 @@ En Mac también se puede hacer doble clic en `correr_modelo.command` y `abrir_pa
 
 Los notebooks de `notebooks/` recorren lo mismo paso a paso, con tablas para revisar cada fase.
 
+### Datos crudos (opcional)
+
+Solo hacen falta para reprocesar desde cero (por ejemplo, si cambian los tramos o se agrega una variable). Para correr el modelo y el panel basta con lo que ya trae el repositorio.
+
+- **REDMAR**: la caché mensual (Huelva, Bonanza y Tarifa) ya está en `data/raw/redmar/meses/`.
+- **Copernicus IBI** (unos 2,4 GB en netCDF): está en la sección *Releases* del repositorio, versión `datos-2026-10`, en varios zip (`copernicus_oleaje_1.zip`, `copernicus_nivel_1.zip`, etc.). Se descargan todos y se descomprimen en la raíz del repositorio; cada zip ya trae la ruta `data/raw/copernicus/<grupo>/Txx.nc`. Después:
+
+```bash
+python -m src.descarga procesar    # regenera copernicus_diario.csv y redmar_diario.csv
+python ejecutar_todo.py
+```
+
+Fuentes: E.U. Copernicus Marine Service Information (reanálisis IBI de oleaje y física) y Puertos del Estado (REDMAR). Los datos se comparten con fines académicos y citando su origen.
+
 ## Estructura y relación con los OE
 
 | Archivo | OE | Qué hace |
