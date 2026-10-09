@@ -33,7 +33,7 @@ python ejecutar_todo.py            # OE1 → OE2 → OE3 → intervalos, tendenc
 streamlit run app.py               # OE4: panel en el navegador
 ```
 
-En Mac también se puede hacer doble clic en `correr_modelo.command` y `abrir_panel.command`. Si XGBoost falla al cargar en un Mac con Anaconda, `entorno.sh` instala aparte un `libomp` compatible.
+En Mac basta con doble clic en `correr_solo_modelo.command` (usa los datos ya procesados) y luego en `abrir_panel.command`. `correr_modelo.command` además descarga y reprocesa los datos crudos. Los `.py` no se abren con doble clic ni arrastrándolos a la Terminal. Si XGBoost falla al cargar en un Mac con Anaconda, `entorno.sh` instala aparte un `libomp` compatible.
 
 Los notebooks de `notebooks/` recorren lo mismo paso a paso, con tablas para revisar cada fase.
 
