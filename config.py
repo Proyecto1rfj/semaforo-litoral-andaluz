@@ -29,6 +29,16 @@ CORRIENTE_INDICE = "no_astronomico"
 # Normalización de los indicadores: "percentiles" (posición en la distribución 2000-2018, robusta a un
 # extremo aislado) o "minmax" (versión 1).
 NORMALIZACION = "minmax"
+# Coincidencia de temporal y pleamar viva (laboratorio v2):
+#   None        → no se usa
+#   "entrada"   → solo como entrada de los modelos (días de coincidencia en t y días de pleamar viva previstos en t+1)
+#   "indicador" → quinto indicador del IEECC + días de pleamar viva previstos en t+1 como entrada
+COINCIDENCIA = "indicador"
+PERCENTIL_MAREJADA = 0.95   # marejada ciclónica alta: sobre el p95 del máximo diario del tramo (2000-2018)
+PERCENTIL_PLEAMAR = 0.75    # pleamar viva: pleamar diaria prevista sobre el p75 del tramo (2000-2018)
+
+if COINCIDENCIA == "indicador":
+    INDICADORES["dias_temporal_pleamar"] = "Días con temporal en pleamar viva (oleaje sobre el umbral o marejada alta, con pleamar viva)"
 
 # Indicador auxiliar (se calcula y se muestra, pero no entra al índice)
 AUXILIARES = {"dias_temporal": "Días con Hs sobre el umbral de temporal"}

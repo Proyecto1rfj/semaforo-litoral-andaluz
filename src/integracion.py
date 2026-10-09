@@ -97,6 +97,35 @@ def leer_redmar() -> pd.DataFrame:
     return pd.read_csv(f, parse_dates=["fecha"]) if f.exists() else pd.DataFrame()
 
 
+# ---------- Coincidencia de temporal y pleamar viva (laboratorio v2) ----------
+def _coincidencias(simar, cop, umbral):
+    """Por tramo y trimestre: días en que hubo temporal (Hs sobre el umbral o marejada ciclónica
+    sobre su p95) y además pleamar viva (pleamar diaria prevista sobre su p75), y días de pleamar
+    viva previstos. Los umbrales de cada tramo se fijan con 2000-2018."""
+    marea = pd.read_csv(C.RAW / "marea_prevista_diaria.csv", parse_dates=["fecha"])
+    d = (simar[["fecha", "tramo", "hs"]].merge(cop[["fecha", "tramo", "nivel"]], on=["fecha", "tramo"])
+         .merge(marea, on=["fecha", "tramo"]))
+    ent = d[d.fecha.dt.year.between(*C.ANIOS_TRAIN)]
+    um = ent.groupby("tramo").agg(u_nivel=("nivel", lambda s: s.quantile(C.PERCENTIL_MAREJADA)),
+                                  u_marea=("marea_max_diaria", lambda s: s.quantile(C.PERCENTIL_PLEAMAR)))
+    d = d.merge(um, on="tramo")
+    d["pleamar_viva"] = d.marea_max_diaria > d.u_marea
+    d["temporal"] = (d.hs > umbral) | (d.nivel > d.u_nivel)
+    d["trimestre"] = d.fecha.dt.to_period("Q")
+    return d.groupby(["tramo", "trimestre"]).agg(
+        dias_temporal_pleamar=("temporal", lambda x: int((x & d.loc[x.index, "pleamar_viva"]).sum())),
+        dias_pleamar_viva=("pleamar_viva", "sum")).reset_index()
+
+
+def pleamar_viva_prevista() -> pd.DataFrame:
+    """Días de pleamar viva previstos por tramo y trimestre (incluye 2025-T1): se conocen de antemano."""
+    marea = pd.read_csv(C.RAW / "marea_prevista_diaria.csv", parse_dates=["fecha"])
+    u = marea[marea.fecha.dt.year.between(*C.ANIOS_TRAIN)].groupby("tramo").marea_max_diaria.quantile(C.PERCENTIL_PLEAMAR)
+    marea["viva"] = marea.marea_max_diaria > marea.tramo.map(u)
+    marea["trimestre_objetivo"] = marea.fecha.dt.to_period("Q").astype(str)
+    return marea.groupby(["tramo", "trimestre_objetivo"]).viva.sum().rename("dias_pleamar_viva_t1").reset_index()
+
+
 # ---------- 2 y 3. Panel trimestral ----------
 def _p95(s):
     return s.quantile(0.95)
@@ -127,6 +156,8 @@ def construir_panel() -> pd.DataFrame:
         corriente_media=("corriente", "mean"),
     )
     panel = s.join(c, how="outer").reset_index()
+    if getattr(C, "COINCIDENCIA", None):
+        panel = panel.merge(_coincidencias(simar, cop, umbral), on=["tramo", "trimestre"], how="left")
 
     # Cobertura: días con dato SIMAR / días del trimestre
     dias_trim = panel["trimestre"].apply(lambda p: (p.end_time - p.start_time).days + 1)

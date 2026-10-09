@@ -1,0 +1,11 @@
+escenario,pct_cambio_clase_vs_base,cumple_meta_<20%,spearman_medio_ieecc,pct_salto_alta_baja,pct_entra_o_sale_de_alta
+Pesos de entropía,16.1,True,0.946,0.2,9.0
+Peso de oleaje x2,28.3,False,0.822,1.6,12.2
+"Peso de oleaje x0,5",22.6,False,0.895,0.7,10.6
+Peso de nivel del mar x2,33.2,False,0.77,3.7,16.7
+"Peso de nivel del mar x0,5",9.8,True,0.975,0.0,4.1
+Peso de viento x2,26.5,False,0.816,2.6,13.1
+"Peso de viento x0,5",26.9,False,0.868,1.4,16.2
+Peso de corrientes x2,42.1,False,0.697,5.7,26.3
+"Peso de corrientes x0,5",21.0,False,0.895,0.7,10.4
+Corte 25/50/25,17.5,True,1.0,0.0,7.5

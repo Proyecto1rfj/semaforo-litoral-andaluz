@@ -1,21 +1,24 @@
 {
   "modelo_elegido": "Persistencia",
   "hiperparametros": {},
-  "ndcg_val_candidato": 0.961,
-  "ndcg_val_persistencia": 0.98,
+  "ndcg_val_candidato": 0.968,
+  "ndcg_val_persistencia": 0.972,
   "plan_b_activado": true,
   "features": [
     "hs_p95_n",
     "nivel_p95_n",
     "viento_p95_n",
     "corriente_media_n",
+    "dias_temporal_pleamar_n",
     "hs_p95_n_lag1",
     "nivel_p95_n_lag1",
     "viento_p95_n_lag1",
     "corriente_media_n_lag1",
+    "dias_temporal_pleamar_n_lag1",
     "q_1",
     "q_2",
     "q_3",
-    "q_4"
+    "q_4",
+    "dias_pleamar_viva_t1"
   ]
 }

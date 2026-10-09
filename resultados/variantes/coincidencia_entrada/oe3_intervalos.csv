@@ -1,0 +1,21 @@
+modelo,metrica,valor,ic95_inf,ic95_sup,dif_vs_persistencia,dif_ic95_inf,dif_ic95_sup,diferencia_significativa
+Random Forest,exactitud_balanceada,0.659,0.571,0.743,-0.089,-0.15,-0.026,True
+Random Forest,sensibilidad_alta,0.782,0.667,0.878,-0.026,-0.141,0.128,False
+Random Forest,ndcg@10,0.955,0.923,0.982,-0.021,-0.055,0.008,False
+Random Forest,acierto_en_cambios,0.392,0.264,0.543,0.392,0.264,0.543,True
+SVM,exactitud_balanceada,0.69,0.617,0.758,-0.058,-0.123,0.018,False
+SVM,sensibilidad_alta,0.718,0.583,0.833,-0.09,-0.205,0.058,False
+SVM,ndcg@10,0.954,0.931,0.974,-0.022,-0.049,0.002,False
+SVM,acierto_en_cambios,0.458,0.29,0.615,0.458,0.29,0.615,True
+XGBoost,exactitud_balanceada,0.675,0.604,0.747,-0.074,-0.139,-0.011,True
+XGBoost,sensibilidad_alta,0.75,0.609,0.872,-0.058,-0.199,0.109,False
+XGBoost,ndcg@10,0.964,0.939,0.985,-0.012,-0.039,0.014,False
+XGBoost,acierto_en_cambios,0.433,0.294,0.575,0.433,0.294,0.575,True
+LambdaMART,exactitud_balanceada,0.729,0.652,0.792,-0.02,-0.091,0.064,False
+LambdaMART,sensibilidad_alta,0.833,0.731,0.904,0.026,-0.064,0.141,False
+LambdaMART,ndcg@10,0.973,0.956,0.988,-0.003,-0.024,0.021,False
+LambdaMART,acierto_en_cambios,0.408,0.241,0.573,0.408,0.241,0.573,True
+Persistencia,exactitud_balanceada,0.749,0.653,0.832,0.0,0.0,0.0,False
+Persistencia,sensibilidad_alta,0.808,0.667,0.929,0.0,0.0,0.0,False
+Persistencia,ndcg@10,0.976,0.958,0.989,0.0,0.0,0.0,False
+Persistencia,acierto_en_cambios,0.0,0.0,0.0,0.0,0.0,0.0,False

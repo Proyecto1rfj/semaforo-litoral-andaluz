@@ -55,6 +55,22 @@ Para bajar la sensibilidad a los pesos se probaron dos cambios que se justifican
 
 Configuración final del laboratorio: nivel del mar p95, normalización mínimo-máximo (`NORMALIZACION = "minmax"`). Con ella ningún modelo se distingue de la persistencia en la prueba (todos los intervalos de la diferencia incluyen el cero); LambdaMART la supera en sensibilidad de la clase alta (0,821 contra 0,808) y queda bajo en NDCG (0,972 contra 0,976). Con el nivel p95 aparece una tendencia significativa del nivel del mar en 27 de 40 tramos (mediana +1,9 cm por década), coherente con el alza del nivel medio.
 
+## Marea astronómica como coincidencia con temporales (tercera corrida)
+
+La marea no entra al índice como nivel (eso volvía a medir la geografía de la marea), sino como coincidencia: días del trimestre con temporal (Hs sobre el umbral o marejada ciclónica sobre el p95 del tramo) que caen en pleamar viva (pleamar diaria prevista sobre el p75 del tramo). Como la marea se conoce de antemano, los días de pleamar viva del trimestre siguiente entran también al modelo sin fuga de información. Se probaron dos formas:
+
+| Indicador | Sin coincidencia | Coincidencia solo como entrada del modelo | Coincidencia como quinto indicador (configuración final) |
+|---|---|---|---|
+| Escenarios originales que cumplen | 3 de 10 | 3 de 10 | 4 de 10 (más 2 de 2 en el peso del nuevo indicador) |
+| Peor escenario | 42,1 % | 42,1 % | 37,6 % |
+| Saltos de alta a baja o al revés (peor) | 5,7 % | 5,7 % | 3,5 % |
+| Persistencia en prueba (NDCG / sens. alta) | 0,976 / 0,808 | 0,976 / 0,808 | 0,972 / 0,840 |
+| LambdaMART en prueba (NDCG / sens. alta) | 0,972 / 0,821 | 0,973 / 0,833 | 0,976 / 0,859 |
+| ¿Supera a la persistencia en ambas en la prueba? | No | No | Sí (por poco; intervalos incluyen el cero) |
+| ¿Supera en validación (criterio de selección)? | No | No | No (0,968 / 0,840 contra 0,972 / 0,846) |
+
+Lectura: como quinto indicador, la coincidencia hace el índice algo más robusto y es la primera configuración en que LambdaMART supera a la persistencia en la prueba en las dos métricas de la Tabla 1. No alcanza para cambiar la decisión: el criterio se aplica en validación, donde la persistencia sigue arriba, y la diferencia no es estadísticamente significativa. Los umbrales de pleamar son relativos a cada tramo, así que el indicador mide coincidencia con la pleamar viva del propio tramo y no el nivel absoluto del agua. Los resultados de las otras dos formas quedan en `resultados/variantes/`.
+
 ## Qué queda pendiente
 
 - Validación del índice con daños o eventos reales (necesita datos externos).

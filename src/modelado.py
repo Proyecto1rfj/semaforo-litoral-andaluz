@@ -39,6 +39,10 @@ from src.ieecc import IND_N
 
 # ---------------------------------------------------------------- datos
 FEATURES = IND_N + [c + "_lag1" for c in IND_N] + ["q_1", "q_2", "q_3", "q_4"]
+if getattr(C, "COINCIDENCIA", None) == "entrada":
+    FEATURES += ["dias_temporal_pleamar", "dias_temporal_pleamar_lag1", "dias_pleamar_viva_t1"]
+elif getattr(C, "COINCIDENCIA", None) == "indicador":
+    FEATURES += ["dias_pleamar_viva_t1"]
 
 
 def preparar(panel: pd.DataFrame) -> pd.DataFrame:
@@ -48,6 +52,13 @@ def preparar(panel: pd.DataFrame) -> pd.DataFrame:
         df[c + "_lag1"] = g[c].shift(1)
     for k in range(1, 5):
         df[f"q_{k}"] = (df["q"] == k).astype(int)
+    if getattr(C, "COINCIDENCIA", None):
+        from src.integracion import pleamar_viva_prevista
+        if "dias_temporal_pleamar" in df:
+            df["dias_temporal_pleamar_lag1"] = g["dias_temporal_pleamar"].shift(1)
+        tob = (pd.PeriodIndex(df["trimestre"].astype(str), freq="Q") + 1).astype(str)
+        df = df.assign(trimestre_objetivo=tob).merge(pleamar_viva_prevista(), on=["tramo", "trimestre_objetivo"], how="left").drop(columns="trimestre_objetivo")
+        g = df.groupby("tramo")
     df["clase_t1"] = g["clase"].shift(-1)
     df["ieecc_t1"] = g["ieecc"].shift(-1)
     df["trimestre_objetivo"] = (pd.PeriodIndex(df["trimestre"], freq="Q") + 1).astype(str)

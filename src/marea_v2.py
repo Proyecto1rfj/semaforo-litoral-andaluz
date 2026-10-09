@@ -60,7 +60,7 @@ def corrientes(tramos_sel=None):
 def prevista():
     """Marea astronómica prevista (máximo trimestral) por tramo, 2000-T1 a 2025-T1."""
     import utide
-    filas = []
+    filas, diarias = [], []
     horas = pd.date_range("2000-01-01", "2025-03-31 23:00", freq="h")
     for t in D.tramos().itertuples():
         ds = D._abrir("nivel", t.tramo)
@@ -71,9 +71,12 @@ def prevista():
                            trend=False, nodal=True, verbose=False)
         h = pd.Series(utide.reconstruct(horas, coef, verbose=False).h, index=horas)
         q = h.groupby(h.index.to_period("Q")).max()
+        dia = h.resample("D").max()
+        diarias.append(pd.DataFrame({"fecha": dia.index, "tramo": t.tramo, "marea_max_diaria": dia.values.round(3)}))
         filas.append(pd.DataFrame({"tramo": t.tramo, "trimestre": q.index.astype(str), "marea_max_prevista": q.values.round(3)}))
         print(f"  {t.tramo}: pleamar máx. prevista media {q.mean():.2f} m", flush=True)
     pd.concat(filas).to_csv(C.RAW / "marea_prevista_trimestral.csv", index=False)
+    pd.concat(diarias).to_csv(C.RAW / "marea_prevista_diaria.csv", index=False)
 
 
 def validar():
