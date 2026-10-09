@@ -8,6 +8,6 @@ Peso de viento x2,23.4,False,0.861,1.6,11.0
 "Peso de viento x0,5",22.5,False,0.897,0.8,13.2
 Peso de corrientes x2,37.6,False,0.762,3.5,23.2
 "Peso de corrientes x0,5",18.1,True,0.924,0.5,8.5
-Peso de dias_temporal_pleamar_n x2,8.0,True,0.969,0.2,4.4
-"Peso de dias_temporal_pleamar_n x0,5",5.3,True,0.985,0.0,2.8
+Peso de temporal en pleamar viva x2,8.0,True,0.969,0.2,4.4
+"Peso de temporal en pleamar viva x0,5",5.3,True,0.985,0.0,2.8
 Corte 25/50/25,17.5,True,1.0,0.0,7.5

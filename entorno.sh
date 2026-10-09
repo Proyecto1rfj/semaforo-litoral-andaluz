@@ -2,6 +2,7 @@
 # Motivo: Anaconda trae un libomp antiguo (/opt/anaconda3/lib) y XGBoost 3 no carga con él.
 source .venv/bin/activate
 python -c "import lightgbm" >/dev/null 2>&1 || pip install -q "lightgbm>=4.0"
+python -c "import utide" >/dev/null 2>&1 || pip install -q "utide>=0.3"
 OMP="$HOME/.semaforo_omp"
 if ! python -c "import xgboost, lightgbm" >/dev/null 2>&1; then
   if [ ! -f "$OMP/lib/libomp.dylib" ]; then

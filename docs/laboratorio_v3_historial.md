@@ -13,7 +13,7 @@ Rama paralela a `main` para probar lo que agrega la versión 2 del Capítulo 1 s
 | Tendencias | No había | Mann-Kendall y pendiente de Sen por tramo e indicador |
 | Alerta del panel | No había | Mareas vivas previstas para t+1 y estación de temporales |
 
-Código nuevo: `src/marea_v2.py` y `src/lab_estadistica.py`. Interruptor: `CORRIENTE_INDICE` en `config.py`.
+Código nuevo: `src/marea_v2.py` y `src/analisis.py`. Interruptor: `CORRIENTE_INDICE` en `config.py`.
 
 ## Resultados
 

@@ -85,7 +85,8 @@ def sensibilidad(panel: pd.DataFrame):
     base = calcular_ieecc(panel, pesos_iguales())
     escenarios = {"Pesos de entropía": (pesos_entropia(panel), C.CORTES_TERCILES)}
     nombres = {"hs_p95_n": "oleaje", "nivel_p95_n": "nivel del mar",
-               "viento_p95_n": "viento", "corriente_media_n": "corrientes"}
+               "viento_p95_n": "viento", "corriente_media_n": "corrientes",
+              "dias_temporal_pleamar_n": "temporal en pleamar viva"}
     for c in IND_N:
         escenarios[f"Peso de {nombres.get(c, c)} x2"] = (pesos_escalados(c, 2.0), C.CORTES_TERCILES)
         escenarios[f"Peso de {nombres.get(c, c)} x0,5"] = (pesos_escalados(c, 0.5), C.CORTES_TERCILES)

@@ -1,4 +1,4 @@
-"""Laboratorio v2: análisis que agrega el Capítulo 1 versión 2.
+"""Análisis que agrega el Capítulo 1 versión 3.
 
 1. Intervalos de confianza del 95 % por remuestreo en bloques de trimestres (prueba 2022-2024),
    para cada modelo y para su diferencia con la persistencia → resultados/oe3_intervalos.csv
@@ -8,7 +8,7 @@
    gran amplitud previstas para t+1 (pleamar máxima sobre el percentil 75 del propio tramo en
    2000-2018) → resultados/oe4_alerta.csv
 
-Uso:  python -m src.lab_estadistica
+Uso:  python -m src.analisis  (también lo corre ejecutar_todo.py)
 """
 import numpy as np
 import pandas as pd
@@ -106,7 +106,7 @@ def alerta():
     return a
 
 
-if __name__ == "__main__":
+def ejecutar():
     i = intervalos()
     print("\nIntervalos de confianza 95 % (prueba 2022-2024, bootstrap por trimestres)")
     print(i.round(3).to_string(index=False))
@@ -114,5 +114,9 @@ if __name__ == "__main__":
     print("\nTendencias 2000-2024: tramos con tendencia significativa (p<0,05) y pendiente de Sen mediana por década")
     print(t.groupby("indicador").agg(tramos_signif=("significativa", "sum"), pendiente_mediana=("pendiente_sen_por_decada", "median")).round(4).to_string())
     a = alerta()
-    ult = a[a.trimestre_objetivo == "2025Q1"]
+    ult = a[a.trimestre_objetivo == a.trimestre_objetivo.max()]
     print(f"\nAlerta para {ult.trimestre_objetivo.iloc[0]}:", ult.alerta.value_counts().to_dict())
+
+
+if __name__ == "__main__":
+    ejecutar()

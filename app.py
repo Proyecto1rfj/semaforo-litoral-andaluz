@@ -25,10 +25,14 @@ def cargar():
     val = pd.read_csv(C.RESULTADOS / "oe3_validacion.csv")
     prueba = pd.read_csv(C.RESULTADOS / "oe3_prueba.csv")
     sens = pd.read_csv(C.RESULTADOS / "oe2_sensibilidad.csv")
-    return pred, panel, shap, info, val, prueba, sens
+    extra = {k: pd.read_csv(C.RESULTADOS / f) for k, f in
+             [("alerta", "oe4_alerta.csv"), ("intervalos", "oe3_intervalos.csv"), ("cambios", "oe3_cambios_clase.csv"),
+              ("tendencias", "oe2_tendencias.csv"), ("residuo", "validacion_residuo_redmar.csv")]
+             if (C.RESULTADOS / f).exists()}
+    return pred, panel, shap, info, val, prueba, sens, extra
 
 
-pred, panel, shap, info, val, prueba, sens = cargar()
+pred, panel, shap, info, val, prueba, sens, extra = cargar()
 sintetico = C.MODO == "sintetico"
 
 # ---------------- cabecera
@@ -48,15 +52,22 @@ d = pred[pred["trimestre_objetivo"] == t_obj].sort_values("ranking").copy()
 d["Prioridad"] = d["clase_pred"].map(C.CLASES)
 d["Real"] = d["clase_t1"].map(C.CLASES)
 d["Actual (t)"] = d["clase"].map(C.CLASES)
+ALERTA_ICONO = {"alta": "Alerta alta", "media": "Alerta media", "sin alerta": "Sin alerta"}
+if "alerta" in extra:
+    al = extra["alerta"][extra["alerta"]["trimestre_objetivo"] == t_obj][
+        ["tramo", "alerta", "prob_temporal_clim", "marea_max_prevista", "p75", "mareas_vivas", "estacion_temporales"]]
+    d = d.merge(al, on="tramo", how="left")
+    d["Alerta"] = d["alerta"].map(ALERTA_ICONO)
 es_clasif = "prob_alta" in d.columns and d["prob_alta"].notna().all()
 etq_puntaje = "Prob. prioridad alta" if es_clasif else "Puntaje de prioridad"
 
 tab_panel, tab_metricas = st.tabs(["Panel", "Desempeño y sensibilidad"])
 
 with tab_panel:
-    c1, c2, c3 = st.columns(3)
+    c1, c2, c3, c4 = st.columns(4)
     c1.metric("Tramos en prioridad alta", int((d["clase_pred"] == 2).sum()))
     c2.metric("Trimestre de origen (t)", d["trimestre"].iloc[0])
+    c4.metric("Tramos en alerta alta", int((d.get("alerta") == "alta").sum()) if "alerta" in d else "s/d")
     if d["clase_t1"].notna().all():
         acierto = ((d["clase_pred"] == 2) & (d["clase_t1"] == 2)).sum() / max((d["clase_t1"] == 2).sum(), 1)
         c3.metric("Altos reales detectados", f"{acierto:.0%}")
@@ -80,7 +91,7 @@ with tab_panel:
 
     with der:
         st.subheader("Ranking de inspección")
-        cols = ["ranking", "tramo", "nombre", "puntaje", "ieecc", "Actual (t)", "Prioridad", "Real"]
+        cols = ["ranking", "tramo", "nombre", "puntaje", "ieecc", "Actual (t)", "Prioridad", "Real"] + (["Alerta"] if "Alerta" in d else [])
         tabla = d[cols].rename(columns={"ranking": "#", "puntaje": etq_puntaje, "ieecc": "IEECC (t)",
                                         "Prioridad": "Predicha (t+1)"})
         st.dataframe(tabla, hide_index=True, height=520,
@@ -102,6 +113,11 @@ with tab_panel:
             r = ind.iloc[0]
             st.caption("Indicadores en t: " + " · ".join(
                 f"{v.split(':')[0]} {r[k]:.2f}" for k, v in C.INDICADORES.items() if k in r))
+        if "alerta" in d and pd.notna(fila.get("alerta")):
+            st.markdown(f"**Alerta para {t_obj}:** {ALERTA_ICONO[fila['alerta']]}")
+            st.caption(f"Probabilidad climatológica de temporal en esta época: {fila['prob_temporal_clim']:.0%} · "
+                       f"pleamar máxima prevista {fila['marea_max_prevista']:.2f} m (umbral de pleamar viva del tramo "
+                       f"{fila['p75']:.2f} m). La alerta es alta cuando coinciden la estación de temporales y las pleamares vivas.")
         if shap is not None:
             s = shap[(shap["tramo"] == tramo) & (shap["trimestre_objetivo"] == t_obj)]
             s = s.drop(columns=["tramo", "trimestre_objetivo"]).iloc[0].astype(float)
@@ -149,5 +165,19 @@ with tab_metricas:
         m = pd.read_csv(mc)
         m = m[m["modelo"] == info["modelo_elegido"]].pivot(index="real", columns="predicha", values="n")
         st.dataframe(m.reindex(index=["baja", "media", "alta"], columns=["baja", "media", "alta"]))
+    if "intervalos" in extra:
+        st.subheader("Intervalos de confianza del 95 % (bootstrap por trimestres) y diferencia con la persistencia")
+        st.dataframe(extra["intervalos"], hide_index=True)
+    if "cambios" in extra:
+        st.subheader("Tramos que cambian de clase en t+1 (donde la persistencia falla siempre)")
+        st.dataframe(extra["cambios"], hide_index=True)
     st.subheader("Sensibilidad del IEECC (meta: menos de 20 % de cambio por escenario)")
     st.dataframe(sens, hide_index=True)
+    if "tendencias" in extra:
+        st.subheader("Tendencias 2000-2024 por indicador (Mann-Kendall y pendiente de Sen)")
+        t = extra["tendencias"]
+        st.dataframe(t.groupby("indicador").agg(tramos_con_tendencia=("significativa", "sum"),
+                                                pendiente_mediana_por_decada=("pendiente_sen_por_decada", "median")).round(4))
+    if "residuo" in extra:
+        st.subheader("Validación del nivel del mar no astronómico contra REDMAR")
+        st.dataframe(extra["residuo"], hide_index=True)
