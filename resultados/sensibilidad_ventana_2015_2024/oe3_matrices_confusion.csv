@@ -1,0 +1,55 @@
+conjunto,modelo,real,predicha,n
+prueba 2022-2024,Random Forest,baja,baja,124
+prueba 2022-2024,Random Forest,baja,media,43
+prueba 2022-2024,Random Forest,baja,alta,1
+prueba 2022-2024,Random Forest,media,baja,73
+prueba 2022-2024,Random Forest,media,media,78
+prueba 2022-2024,Random Forest,media,alta,5
+prueba 2022-2024,Random Forest,alta,baja,2
+prueba 2022-2024,Random Forest,alta,media,13
+prueba 2022-2024,Random Forest,alta,alta,141
+prueba 2022-2024,SVM,baja,baja,121
+prueba 2022-2024,SVM,baja,media,44
+prueba 2022-2024,SVM,baja,alta,3
+prueba 2022-2024,SVM,media,baja,77
+prueba 2022-2024,SVM,media,media,74
+prueba 2022-2024,SVM,media,alta,5
+prueba 2022-2024,SVM,alta,baja,4
+prueba 2022-2024,SVM,alta,media,12
+prueba 2022-2024,SVM,alta,alta,140
+prueba 2022-2024,XGBoost,baja,baja,127
+prueba 2022-2024,XGBoost,baja,media,40
+prueba 2022-2024,XGBoost,baja,alta,1
+prueba 2022-2024,XGBoost,media,baja,78
+prueba 2022-2024,XGBoost,media,media,72
+prueba 2022-2024,XGBoost,media,alta,6
+prueba 2022-2024,XGBoost,alta,baja,4
+prueba 2022-2024,XGBoost,alta,media,11
+prueba 2022-2024,XGBoost,alta,alta,141
+prueba 2022-2024,LambdaMART,baja,baja,119
+prueba 2022-2024,LambdaMART,baja,media,48
+prueba 2022-2024,LambdaMART,baja,alta,1
+prueba 2022-2024,LambdaMART,media,baja,48
+prueba 2022-2024,LambdaMART,media,media,94
+prueba 2022-2024,LambdaMART,media,alta,14
+prueba 2022-2024,LambdaMART,alta,baja,1
+prueba 2022-2024,LambdaMART,alta,media,14
+prueba 2022-2024,LambdaMART,alta,alta,141
+prueba 2022-2024,Persistencia,baja,baja,126
+prueba 2022-2024,Persistencia,baja,media,40
+prueba 2022-2024,Persistencia,baja,alta,2
+prueba 2022-2024,Persistencia,media,baja,40
+prueba 2022-2024,Persistencia,media,media,105
+prueba 2022-2024,Persistencia,media,alta,11
+prueba 2022-2024,Persistencia,alta,baja,2
+prueba 2022-2024,Persistencia,alta,media,11
+prueba 2022-2024,Persistencia,alta,alta,143
+prueba 2022-2024,Clase mayoritaria,baja,baja,168
+prueba 2022-2024,Clase mayoritaria,baja,media,0
+prueba 2022-2024,Clase mayoritaria,baja,alta,0
+prueba 2022-2024,Clase mayoritaria,media,baja,156
+prueba 2022-2024,Clase mayoritaria,media,media,0
+prueba 2022-2024,Clase mayoritaria,media,alta,0
+prueba 2022-2024,Clase mayoritaria,alta,baja,156
+prueba 2022-2024,Clase mayoritaria,alta,media,0
+prueba 2022-2024,Clase mayoritaria,alta,alta,0

@@ -224,6 +224,28 @@ def calcular_shap(modelo, d_explicar, d_fondo) -> pd.DataFrame | None:
     return pd.DataFrame(vals, columns=FEATURES, index=d_explicar.index)
 
 
+def analizar_cambios(p: pd.DataFrame) -> pd.DataFrame:
+    """Desempeño solo en los pares tramo-trimestre cuya clase cambia de t a t+1.
+    La persistencia falla todos esos casos por definición; lo que un modelo acierte ahí es su aporte."""
+    p = p.dropna(subset=["clase_t1"]).copy()
+    p["cambia"] = p["clase"] != p["clase_t1"]
+    p["acierto"] = p["clase_pred"] == p["clase_t1"]
+    p["sube_a_alta"] = (p["clase_t1"] == 2) & (p["clase"] < 2)
+    p["sale_de_alta"] = (p["clase"] == 2) & (p["clase_t1"] < 2)
+    filas = []
+    for m, g in p.groupby("modelo", sort=False):
+        c = g[g.cambia]
+        sube, sale = g[g.sube_a_alta], g[g.sale_de_alta]
+        filas.append({
+            "modelo": m, "casos_con_cambio": len(c),
+            "acierto_en_cambios": c.acierto.mean(),
+            "detecta_subida_a_alta": (sube.clase_pred == 2).mean() if len(sube) else np.nan,
+            "detecta_salida_de_alta": (sale.clase_pred < 2).mean() if len(sale) else np.nan,
+            "acierto_sin_cambio": g[~g.cambia].acierto.mean(),
+        })
+    return pd.DataFrame(filas).round(3)
+
+
 # ---------------------------------------------------------------- flujo completo
 def ejecutar():
     panel = pd.read_parquet(C.PROCESSED / "panel_ieecc.parquet")
@@ -263,12 +285,17 @@ def ejecutar():
         if nombre == "Persistencia": return Persistencia()
         if nombre == "Clase mayoritaria": return Mayoritaria()
         return _crear(nombre, mejores[nombre])
-    filas_te, modelos_tv, matrices = [], {}, []
+    filas_te, modelos_tv, matrices, pred_todos = [], {}, [], []
     for nombre in list(GRILLAS) + ["Persistencia", "Clase mayoritaria"]:
         m = _fit(nuevo(nombre), tv)
         modelos_tv[nombre] = m
         filas_te.append(evaluar(m, te, matrices, "prueba 2022-2024"))
+        o = te[["tramo", "trimestre_objetivo", "clase", "clase_t1"]].copy()
+        o["modelo"] = nombre
+        o["clase_pred"] = _clase_pred(m, te, m.score(te))
+        pred_todos.append(o)
     prueba = pd.DataFrame(filas_te).round(3)
+    cambios = analizar_cambios(pd.concat(pred_todos))
     # Metas de la Tabla 1 (OE3): superar a la persistencia en NDCG y en sensibilidad de la clase alta
     pers = prueba.set_index("modelo").loc["Persistencia"]
     prueba["supera_persistencia_ndcg_y_sens"] = ((prueba[f"ndcg@{C.K_NDCG}"] > pers[f"ndcg@{C.K_NDCG}"])
@@ -298,6 +325,8 @@ def ejecutar():
         shap_df.to_parquet(C.RESULTADOS / "shap.parquet")
 
     val.to_csv(C.RESULTADOS / "oe3_validacion.csv", index=False)
+    cambios.to_csv(C.RESULTADOS / "oe3_cambios_clase.csv", index=False)
+    pd.concat(pred_todos).to_parquet(C.RESULTADOS / "predicciones_prueba_todos.parquet")
     prueba.to_csv(C.RESULTADOS / "oe3_prueba.csv", index=False)
     pd.DataFrame(matrices).to_csv(C.RESULTADOS / "oe3_matrices_confusion.csv", index=False)
     pred.to_parquet(C.RESULTADOS / "predicciones.parquet")
@@ -309,6 +338,8 @@ def ejecutar():
 
     print("\nValidación (2019-2021)\n", val.drop(columns="hiperparametros").to_string(index=False))
     print("\nPrueba (2022-2024)\n", prueba.to_string(index=False))
+    print("\nTramos que cambian de clase en t+1 (prueba; matriz de riesgos del Capítulo 1)\n",
+          cambios.to_string(index=False))
     print(f"\nModelo elegido para el panel: {elegido}"
           + ("  (plan B: ningún modelo superó a la persistencia)" if elegido == "Persistencia" else ""))
     return val, prueba, pred
