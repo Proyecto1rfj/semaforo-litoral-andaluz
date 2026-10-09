@@ -12,7 +12,7 @@ El semáforo ordena los tramos del litoral atlántico de Andalucía (de la desem
 - La parte de Tarifa (T35 a T40) queda casi siempre en clase alta, por el oleaje y las corrientes del Estrecho.
 - Pendientes del grupo: segmentación definitiva de tramos de 10 km, fuente del viento (SIMAR o Copernicus) y ajustes al texto del Capítulo 1.
 
-El detalle está en [`docs/resumen_semaforo_grupo3.pdf`](docs/resumen_semaforo_grupo3.pdf). Una vista del semáforo con los resultados actuales está en [`docs/semaforo_vista_estatica.html`](docs/semaforo_vista_estatica.html) (descargarla y abrirla en el navegador).
+El detalle está en [`docs/resumen_semaforo_grupo3_v2.pdf`](docs/resumen_semaforo_grupo3_v2.pdf) (la versión del 8 de octubre sigue en `docs/resumen_semaforo_grupo3.pdf`). Una vista del semáforo con los resultados actuales está en [`docs/semaforo_vista_estatica.html`](docs/semaforo_vista_estatica.html) (descargarla y abrirla en el navegador).
 
 ## Cómo correrlo
 
