@@ -210,7 +210,16 @@ def calcular_shap(modelo, d_explicar, d_fondo) -> pd.DataFrame | None:
     """Contribución de cada entrada al puntaje de prioridad alta (SHAP)."""
     import shap
     X = d_explicar[FEATURES]
-    if isinstance(modelo, (Persistencia, Mayoritaria)):
+    if isinstance(modelo, Persistencia):
+        # La persistencia ordena por el IEECC de t, que es lineal en los indicadores normalizados.
+        # Para una función lineal, el valor SHAP exacto de cada variable es peso × (valor − media de fondo).
+        from src.ieecc import pesos_iguales
+        w = pesos_iguales()
+        vals = pd.DataFrame(0.0, index=d_explicar.index, columns=FEATURES)
+        for c in IND_N:
+            vals[c] = w[c] * (d_explicar[c] - d_fondo[c].mean())
+        return vals
+    if isinstance(modelo, Mayoritaria):
         return None
     if modelo.nombre == "SVM":
         fondo = shap.kmeans(d_fondo[FEATURES], 20)
@@ -319,6 +328,7 @@ def ejecutar():
 
     sh = [calcular_shap(m_final, te, tr), calcular_shap(m_todo, pr, tv)]
     C.RESULTADOS.mkdir(parents=True, exist_ok=True)
+    (C.RESULTADOS / "shap.parquet").unlink(missing_ok=True)   # nunca dejar explicaciones de una corrida anterior
     if sh[0] is not None:
         shap_df = pd.concat(sh)
         shap_df[["tramo", "trimestre_objetivo"]] = pred[["tramo", "trimestre_objetivo"]].values

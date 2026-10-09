@@ -42,7 +42,7 @@ t_obj = st.sidebar.selectbox("Trimestre a priorizar", trimestres, index=len(trim
                              format_func=lambda t: f"{t} (pronóstico vigente)" if t == trimestres[-1] else t)
 st.sidebar.markdown(f"**Modelo del panel:** {info['modelo_elegido']}")
 if info.get("plan_b_activado"):
-    st.sidebar.info("Plan B: ningún modelo superó a la persistencia en validación.")
+    st.sidebar.info("Ningún modelo superó a la persistencia, así que queda como referencia operativa del prototipo (Capítulo 1, Tabla 1). La ficha muestra cuánto aporta cada indicador al IEECC del tramo.")
 
 d = pred[pred["trimestre_objetivo"] == t_obj].sort_values("ranking").copy()
 d["Prioridad"] = d["clase_pred"].map(C.CLASES)
