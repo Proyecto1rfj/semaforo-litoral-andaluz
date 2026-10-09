@@ -15,7 +15,8 @@ Esta rama sigue el Capítulo 1 versión 3. La versión anterior quedó en la ram
 - **OE3:** en la prueba 2022-2024, LambdaMART supera a la persistencia en NDCG@10 (0,976 contra 0,972) y en sensibilidad de la clase alta (0,859 contra 0,840), pero la diferencia no es significativa y en validación la persistencia sigue arriba. Por el criterio del Capítulo 1, la persistencia queda como referencia operativa. Cuando un tramo cambia de clase, los modelos aciertan entre 41 % y 43 %; la persistencia, nunca.
 - **OE4:** panel con ranking, mapa semáforo, mapa de calor, ficha por tramo y alerta del trimestre siguiente (estación de temporales y pleamares vivas).
 - **Tendencias 2000-2024:** el nivel del mar no astronómico sube en 27 de 40 tramos (mediana +1,9 cm por década) y el viento baja en 10.
-- **Pendientes:** validar el índice con daños reales, segmentación definitiva de 10 km y enlace al zip de datos crudos.
+- **Validación con daños reales** (`src/validacion_danos.py`, 34 tramos con obras de emergencia por temporal en 2015, 2016, 2018 y 2024, con fuentes en `data/validacion/eventos_temporales.csv`): en el tiempo, el índice acierta. El trimestre del daño queda en el percentil 86 de la historia del propio tramo (Emma 2018: percentil 99,6), y en el 94 % de los casos los días de temporal en pleamar viva están en el 25 % superior (permutación, p < 0,001). En el espacio, la señal es débil: el 41 % de los tramos dañados estaba en prioridad alta frente al 33 % esperado al azar. El índice detecta cuándo la exposición es extrema, pero el lugar del daño también depende de la vulnerabilidad de cada frente costero, que el índice no mide.
+- **Pendientes:** segmentación definitiva de 10 km y enlace al zip de datos crudos.
 
 Detalle de las pruebas que llevaron a esta versión: [`docs/laboratorio_v3_historial.md`](docs/laboratorio_v3_historial.md).
 
@@ -68,6 +69,7 @@ Fuentes: E.U. Copernicus Marine Service Information (reanálisis IBI de oleaje y
 | `src/ieecc.py` | OE2 | Normaliza los cinco indicadores con 2000-2018, calcula el IEECC, clases por terciles y sensibilidad |
 | `src/modelado.py` | OE3 | RF, SVM, XGBoost y LambdaMART contra persistencia y clase mayoritaria; selección en validación; cambios de clase; SHAP |
 | `src/analisis.py` | OE2-OE4 | Intervalos de confianza por bootstrap, tendencias de Mann-Kendall y alerta del panel |
+| `src/validacion_danos.py` | OE2 | Validación del índice con daños documentados por temporales (en el espacio y en el tiempo) |
 | `app.py` | OE4 | Panel: mapa semáforo, ranking, ficha (IEECC, clases, SHAP y alerta), mapa de calor y métricas |
 | `src/datos_sinteticos.py` | (apoyo) | Datos de prueba para correr sin descargas |
 | `data/` | | Datos procesados reales |

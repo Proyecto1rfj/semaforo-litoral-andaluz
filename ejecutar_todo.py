@@ -2,6 +2,8 @@
 Luego abrir el panel con:  streamlit run app.py
 """
 import config as C
+import runpy
+
 from src import analisis, datos_sinteticos, ieecc, integracion, modelado
 
 if __name__ == "__main__":
@@ -14,4 +16,7 @@ if __name__ == "__main__":
     modelado.ejecutar()
     print("\n" + "-" * 70)
     analisis.ejecutar()
+    if (C.RAW.parent / "validacion" / "eventos_temporales.csv").exists():
+        print("\n" + "-" * 70)
+        runpy.run_module("src.validacion_danos", run_name="__main__")
     print("\nListo. Panel:  streamlit run app.py")

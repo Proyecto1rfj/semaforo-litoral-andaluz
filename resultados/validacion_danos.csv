@@ -1,0 +1,11 @@
+version,evento,trimestre,tramos_con_danos,en_prioridad_alta,pct_alta,en_alta_o_media,percentil_medio_ieecc,p_valor_vs_azar
+versión 3,Temporales primer trimestre 2015,2015Q1,7,3,42.9,4,53.9,0.4082
+versión 3,Temporales de mayo 2016 con mareas vivas,2016Q2,12,4,33.3,6,40.8,0.6088
+versión 3,Temporales de febrero y marzo 2018 (Emma),2018Q1,11,6,54.5,9,67.7,0.0747
+versión 3,Borrasca Karlotta febrero 2024,2024Q1,4,1,25.0,2,45.0,0.808
+versión 3,Total 2015-2024,,34,14,41.2,21,52.7,
+versión anterior,Temporales primer trimestre 2015,2015Q1,7,3,42.9,6,60.0,0.4082
+versión anterior,Temporales de mayo 2016 con mareas vivas,2016Q2,12,3,25.0,5,36.9,0.8488
+versión anterior,Temporales de febrero y marzo 2018 (Emma),2018Q1,11,5,45.5,10,63.6,0.2395
+versión anterior,Borrasca Karlotta febrero 2024,2024Q1,4,2,50.0,3,57.5,0.3919
+versión anterior,Total 2015-2024,,34,13,38.2,24,52.7,

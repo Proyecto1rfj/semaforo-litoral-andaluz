@@ -1,0 +1,6 @@
+evento,tramos_con_danos,percentil_propio_ieecc,percentil_propio_dias_temporal_pleamar,percentil_propio_hs_p95,percentil_propio_nivel_p95,pct_en_25_superior_ieecc,pct_en_25_superior_coincidencia,p_valor_permutacion_total
+Temporales primer trimestre 2015,7,70.4,81.9,46.9,64.1,14.3,71.4,
+Temporales de mayo 2016 con mareas vivas,12,79.5,85.2,71.3,80.4,75.0,100.0,
+Temporales de febrero y marzo 2018 (Emma),11,99.6,97.8,99.6,97.8,100.0,100.0,
+Borrasca Karlotta febrero 2024,4,96.5,93.4,94.5,96.0,100.0,100.0,
+Total 2015-2024,34,86.1,89.5,78.2,84.5,73.5,94.1,0.0
