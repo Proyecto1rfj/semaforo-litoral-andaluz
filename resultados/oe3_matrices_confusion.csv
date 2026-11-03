@@ -3,43 +3,43 @@ prueba 2022-2024,Random Forest,baja,baja,73
 prueba 2022-2024,Random Forest,baja,media,14
 prueba 2022-2024,Random Forest,baja,alta,9
 prueba 2022-2024,Random Forest,media,baja,39
-prueba 2022-2024,Random Forest,media,media,26
-prueba 2022-2024,Random Forest,media,alta,19
-prueba 2022-2024,Random Forest,alta,baja,20
-prueba 2022-2024,Random Forest,alta,media,23
-prueba 2022-2024,Random Forest,alta,alta,53
+prueba 2022-2024,Random Forest,media,media,27
+prueba 2022-2024,Random Forest,media,alta,18
+prueba 2022-2024,Random Forest,alta,baja,21
+prueba 2022-2024,Random Forest,alta,media,24
+prueba 2022-2024,Random Forest,alta,alta,51
 prueba 2022-2024,SVM,baja,baja,77
 prueba 2022-2024,SVM,baja,media,11
 prueba 2022-2024,SVM,baja,alta,8
-prueba 2022-2024,SVM,media,baja,40
-prueba 2022-2024,SVM,media,media,25
+prueba 2022-2024,SVM,media,baja,41
+prueba 2022-2024,SVM,media,media,24
 prueba 2022-2024,SVM,media,alta,19
 prueba 2022-2024,SVM,alta,baja,20
 prueba 2022-2024,SVM,alta,media,32
 prueba 2022-2024,SVM,alta,alta,44
-prueba 2022-2024,XGBoost,baja,baja,78
-prueba 2022-2024,XGBoost,baja,media,11
-prueba 2022-2024,XGBoost,baja,alta,7
-prueba 2022-2024,XGBoost,media,baja,42
-prueba 2022-2024,XGBoost,media,media,23
-prueba 2022-2024,XGBoost,media,alta,19
-prueba 2022-2024,XGBoost,alta,baja,28
-prueba 2022-2024,XGBoost,alta,media,13
-prueba 2022-2024,XGBoost,alta,alta,55
+prueba 2022-2024,XGBoost,baja,baja,82
+prueba 2022-2024,XGBoost,baja,media,8
+prueba 2022-2024,XGBoost,baja,alta,6
+prueba 2022-2024,XGBoost,media,baja,44
+prueba 2022-2024,XGBoost,media,media,16
+prueba 2022-2024,XGBoost,media,alta,24
+prueba 2022-2024,XGBoost,alta,baja,23
+prueba 2022-2024,XGBoost,alta,media,16
+prueba 2022-2024,XGBoost,alta,alta,57
 prueba 2022-2024,LambdaMART,baja,baja,70
-prueba 2022-2024,LambdaMART,baja,media,16
-prueba 2022-2024,LambdaMART,baja,alta,10
+prueba 2022-2024,LambdaMART,baja,media,18
+prueba 2022-2024,LambdaMART,baja,alta,8
 prueba 2022-2024,LambdaMART,media,baja,21
-prueba 2022-2024,LambdaMART,media,media,42
-prueba 2022-2024,LambdaMART,media,alta,21
+prueba 2022-2024,LambdaMART,media,media,40
+prueba 2022-2024,LambdaMART,media,alta,23
 prueba 2022-2024,LambdaMART,alta,baja,5
 prueba 2022-2024,LambdaMART,alta,media,26
 prueba 2022-2024,LambdaMART,alta,alta,65
-prueba 2022-2024,Persistencia,baja,baja,67
-prueba 2022-2024,Persistencia,baja,media,20
+prueba 2022-2024,Persistencia,baja,baja,68
+prueba 2022-2024,Persistencia,baja,media,19
 prueba 2022-2024,Persistencia,baja,alta,9
-prueba 2022-2024,Persistencia,media,baja,22
-prueba 2022-2024,Persistencia,media,media,37
+prueba 2022-2024,Persistencia,media,baja,21
+prueba 2022-2024,Persistencia,media,media,38
 prueba 2022-2024,Persistencia,media,alta,25
 prueba 2022-2024,Persistencia,alta,baja,7
 prueba 2022-2024,Persistencia,alta,media,27
@@ -53,3 +53,57 @@ prueba 2022-2024,Clase mayoritaria,media,alta,0
 prueba 2022-2024,Clase mayoritaria,alta,baja,96
 prueba 2022-2024,Clase mayoritaria,alta,media,0
 prueba 2022-2024,Clase mayoritaria,alta,alta,0
+prospectiva 2025,Random Forest,baja,baja,22
+prospectiva 2025,Random Forest,baja,media,7
+prospectiva 2025,Random Forest,baja,alta,3
+prospectiva 2025,Random Forest,media,baja,11
+prospectiva 2025,Random Forest,media,media,8
+prospectiva 2025,Random Forest,media,alta,9
+prospectiva 2025,Random Forest,alta,baja,7
+prospectiva 2025,Random Forest,alta,media,5
+prospectiva 2025,Random Forest,alta,alta,20
+prospectiva 2025,SVM,baja,baja,23
+prospectiva 2025,SVM,baja,media,6
+prospectiva 2025,SVM,baja,alta,3
+prospectiva 2025,SVM,media,baja,8
+prospectiva 2025,SVM,media,media,8
+prospectiva 2025,SVM,media,alta,12
+prospectiva 2025,SVM,alta,baja,7
+prospectiva 2025,SVM,alta,media,2
+prospectiva 2025,SVM,alta,alta,23
+prospectiva 2025,XGBoost,baja,baja,27
+prospectiva 2025,XGBoost,baja,media,2
+prospectiva 2025,XGBoost,baja,alta,3
+prospectiva 2025,XGBoost,media,baja,12
+prospectiva 2025,XGBoost,media,media,4
+prospectiva 2025,XGBoost,media,alta,12
+prospectiva 2025,XGBoost,alta,baja,7
+prospectiva 2025,XGBoost,alta,media,3
+prospectiva 2025,XGBoost,alta,alta,22
+prospectiva 2025,LambdaMART,baja,baja,22
+prospectiva 2025,LambdaMART,baja,media,10
+prospectiva 2025,LambdaMART,baja,alta,0
+prospectiva 2025,LambdaMART,media,baja,8
+prospectiva 2025,LambdaMART,media,media,12
+prospectiva 2025,LambdaMART,media,alta,8
+prospectiva 2025,LambdaMART,alta,baja,2
+prospectiva 2025,LambdaMART,alta,media,6
+prospectiva 2025,LambdaMART,alta,alta,24
+prospectiva 2025,Persistencia,baja,baja,20
+prospectiva 2025,Persistencia,baja,media,8
+prospectiva 2025,Persistencia,baja,alta,4
+prospectiva 2025,Persistencia,media,baja,8
+prospectiva 2025,Persistencia,media,media,8
+prospectiva 2025,Persistencia,media,alta,12
+prospectiva 2025,Persistencia,alta,baja,4
+prospectiva 2025,Persistencia,alta,media,12
+prospectiva 2025,Persistencia,alta,alta,16
+prospectiva 2025,Clase mayoritaria,baja,baja,32
+prospectiva 2025,Clase mayoritaria,baja,media,0
+prospectiva 2025,Clase mayoritaria,baja,alta,0
+prospectiva 2025,Clase mayoritaria,media,baja,28
+prospectiva 2025,Clase mayoritaria,media,media,0
+prospectiva 2025,Clase mayoritaria,media,alta,0
+prospectiva 2025,Clase mayoritaria,alta,baja,32
+prospectiva 2025,Clase mayoritaria,alta,media,0
+prospectiva 2025,Clase mayoritaria,alta,alta,0

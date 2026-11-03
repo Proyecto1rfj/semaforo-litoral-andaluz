@@ -72,7 +72,10 @@ def preparar(panel: pd.DataFrame) -> pd.DataFrame:
             return "validacion"
         if C.ANIOS_TEST[0] <= a <= C.ANIOS_TEST[1]:
             return "prueba"
-        return "pronostico"          # 2025-T1: trimestre siguiente al último dato
+        pr = getattr(C, "ANIOS_PROSP", None)
+        if pr and pr[0] <= a <= pr[1]:
+            return "prospectiva"     # 2025: fuera de muestra, modelos entrenados con 2000-2024
+        return "pronostico"          # trimestre siguiente al último dato
     df["particion"] = df["anio_objetivo"].map(particion)
     return df.sort_values(["trimestre", "tramo"]).reset_index(drop=True)
 
@@ -275,7 +278,9 @@ def ejecutar():
     te = df[df.particion == "prueba"]
     tv = pd.concat([tr, va])
     pr = df[df.particion == "pronostico"]
-    print(f"OE3 · filas entrenamiento {len(tr)}, validación {len(va)}, prueba {len(te)}, pronóstico {len(pr)}")
+    ps = df[(df.particion == "prospectiva") & df["clase_t1"].notna()]
+    print(f"OE3 · filas entrenamiento {len(tr)}, validación {len(va)}, prueba {len(te)}, "
+          f"prospectiva {len(ps)}, pronóstico {len(pr)}")
 
     # 1. Ajuste de hiperparámetros en validación
     mejores, filas_val = {}, []
@@ -330,11 +335,37 @@ def ejecutar():
     prueba["supera_persistencia_ndcg_y_sens"] = ((prueba[f"ndcg@{C.K_NDCG}"] > pers[f"ndcg@{C.K_NDCG}"])
                                                  & (prueba["sensibilidad_alta"] > pers["sensibilidad_alta"]))
 
-    # 4. Predicciones para el panel: prueba (modelo 2000-2021) + pronóstico 2025-T1 (modelo con todo)
+    # 3b. Prueba prospectiva 2025: cada modelo se reentrena con 2000-2024 (mismos hiperparámetros) y se
+    #     evalúa una sola vez en 2025, sin volver a elegir nada
+    filas_ps, pred_ps, modelos_tvt = [], [], {}
+    if len(ps):
+        tvt = pd.concat([tv, te])
+        for nombre in list(GRILLAS) + ["Persistencia", "Clase mayoritaria"]:
+            m = _fit(nuevo(nombre), tvt)
+            modelos_tvt[nombre] = m
+            filas_ps.append(evaluar(m, ps, matrices, "prospectiva 2025"))
+            o = ps[["tramo", "trimestre_objetivo", "clase", "clase_t1"]].copy()
+            o["modelo"] = nombre
+            o["puntaje"] = m.score(ps)
+            o["ieecc_t1"] = ps["ieecc_t1"].values
+            o["clase_pred"] = _clase_pred(m, ps, o["puntaje"].values)
+            pred_ps.append(o)
+    prosp = pd.DataFrame(filas_ps).round(3) if filas_ps else pd.DataFrame()
+    if len(prosp):
+        pp = prosp.set_index("modelo").loc["Persistencia"]
+        prosp["supera_persistencia_ndcg_y_sens"] = ((prosp[f"ndcg@{C.K_NDCG}"] > pp[f"ndcg@{C.K_NDCG}"])
+                                                    & (prosp["sensibilidad_alta"] > pp["sensibilidad_alta"]))
+        cambios_ps = analizar_cambios(pd.concat(pred_ps))
+
+    # 4. Predicciones para el panel: prueba (modelo 2000-2021), prospectiva 2025 (modelo 2000-2024)
+    #    y pronóstico del trimestre siguiente al último dato (modelo con todo)
     m_final = modelos_tv[elegido]
-    m_todo = _fit(nuevo(elegido), pd.concat([tv, te]))
+    m_todo = modelos_tvt.get(elegido) or _fit(nuevo(elegido), pd.concat([tv, te]))
+    m_all = _fit(nuevo(elegido), pd.concat([tv, te, ps])) if len(ps) else m_todo
     salidas = []
-    for d, m in ((te, m_final), (pr, m_todo)):
+    for d, m in ((te, m_final), (ps, m_todo), (pr, m_all)):
+        if not len(d):
+            continue
         o = d[["tramo", "nombre", "lat", "lon", "trimestre", "trimestre_objetivo", "particion",
                "ieecc", "clase", "clase_t1", "ieecc_t1"]].copy()
         o["puntaje"] = m.score(d)
@@ -346,7 +377,7 @@ def ejecutar():
         salidas.append(o)
     pred = pd.concat(salidas)
 
-    sh = [calcular_shap(m_final, te, tr), calcular_shap(m_todo, pr, tv)]
+    sh = [calcular_shap(m, d, f) for d, m, f in ((te, m_final, tr), (ps, m_todo, tv), (pr, m_all, tv)) if len(d)]
     C.RESULTADOS.mkdir(parents=True, exist_ok=True)
     (C.RESULTADOS / "shap.parquet").unlink(missing_ok=True)   # nunca dejar explicaciones de una corrida anterior
     if sh[0] is not None:
@@ -358,6 +389,10 @@ def ejecutar():
     cambios.to_csv(C.RESULTADOS / "oe3_cambios_clase.csv", index=False)
     pd.concat(pred_todos).to_parquet(C.RESULTADOS / "predicciones_prueba_todos.parquet")
     prueba.to_csv(C.RESULTADOS / "oe3_prueba.csv", index=False)
+    if len(prosp):
+        prosp.to_csv(C.RESULTADOS / "oe3_prospectiva_2025.csv", index=False)
+        cambios_ps.to_csv(C.RESULTADOS / "oe3_prospectiva_2025_cambios.csv", index=False)
+        pd.concat(pred_ps).to_parquet(C.RESULTADOS / "predicciones_prospectiva_todos.parquet")
     pd.DataFrame(matrices).to_csv(C.RESULTADOS / "oe3_matrices_confusion.csv", index=False)
     pred.to_parquet(C.RESULTADOS / "predicciones.parquet")
     joblib.dump(m_todo, C.RESULTADOS / "modelo_elegido.joblib")
@@ -368,6 +403,9 @@ def ejecutar():
 
     print("\nValidación (2019-2021)\n", val.drop(columns="hiperparametros").to_string(index=False))
     print("\nPrueba (2022-2024)\n", prueba.to_string(index=False))
+    if len(prosp):
+        print("\nPrueba prospectiva 2025 (modelos entrenados con 2000-2024)\n", prosp.to_string(index=False))
+        print("\nCambios de clase en 2025\n", cambios_ps.to_string(index=False))
     print("\nTramos que cambian de clase en t+1 (prueba; matriz de riesgos del Capítulo 1)\n",
           cambios.to_string(index=False))
     print(f"\nModelo elegido para el panel: {elegido}"

@@ -7,7 +7,7 @@ PROCESSED = BASE / "data" / "processed"
 RESULTADOS = BASE / "resultados"
 
 # Ventana temporal y partición (Capítulo 1)
-INICIO, FIN = "2000-01-01", "2024-12-31"
+INICIO, FIN = "2000-01-01", "2025-12-31"   # 2025 entra solo como prueba prospectiva (no entrena ni valida)
 
 # Segmentación: tramos de unos 10 km (src/tramos.py). Los netCDF de cada tramo están en
 # data/raw/<COPERNICUS_DIR>; los de 10 km se arman desde las descargas anteriores (src/celdas_10km.py).
@@ -16,6 +16,8 @@ COPERNICUS_DIR = "copernicus_10km"
 ANIOS_TRAIN = (2000, 2018)
 ANIOS_VALID = (2019, 2021)
 ANIOS_TEST = (2022, 2024)
+ANIOS_PROSP = (2025, 2025)   # prueba prospectiva: modelos entrenados con 2000-2024, sin reajustar nada
+ANIO_CIERRE_ESTUDIO = 2024   # OE2 (sensibilidad, tendencias) se informa sobre 2000-2024
 
 # Indicadores del IEECC (Capítulo 1: oleaje, nivel del mar, viento y corrientes), con valores
 # extremos por trimestre porque el daño lo producen los temporales más que las condiciones medias

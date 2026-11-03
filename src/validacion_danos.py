@@ -39,6 +39,7 @@ def validar(panel_path=None, etiqueta="versión 3"):
     tramos = pd.read_csv(C.RAW / "tramos.csv")
     ev["tramo"], ev["dist_km"] = _tramo_mas_cercano(ev, tramos)
     ev = ev[ev.dist_km <= DIST_MAX_KM]
+    ev = ev[ev.trimestre.astype(str).str[:4].astype(int) <= getattr(C, "ANIO_CIERRE_ESTUDIO", 9999)]   # 2025 va aparte
     panel = pd.read_parquet(panel_path or C.PROCESSED / "panel_ieecc.parquet")
     panel["trimestre"] = panel["trimestre"].astype(str)
     panel["pct_ieecc"] = panel.groupby("trimestre").ieecc.rank(pct=True)
@@ -54,7 +55,7 @@ def validar(panel_path=None, etiqueta="versión 3"):
                       "en_prioridad_alta": k, "pct_alta": round(100 * k / n, 1),
                       "en_alta_o_media": int((t.clase >= 1).sum()),
                       "percentil_medio_ieecc": round(100 * t.pct_ieecc.mean(), 1),
-                      "p_valor_vs_azar": round(_p_hiper(k, n, 40, n_alta), 4)})
+                      "p_valor_vs_azar": round(_p_hiper(k, n, int((panel.trimestre == q).sum()), n_alta), 4)})
     res = pd.DataFrame(filas)
     tot_n, tot_k = res.tramos_con_danos.sum(), res.en_prioridad_alta.sum()
     res = pd.concat([res, pd.DataFrame([{"version": etiqueta, "evento": "Total 2015-2024", "trimestre": "",
@@ -105,6 +106,14 @@ def pronostico_2025(det_2025):
     al = al[al.trimestre_objetivo == "2025Q1"][["tramo", "alerta"]]
     t = det_2025.drop_duplicates("tramo")[["lugar", "municipio", "tramo", "dist_km"]].merge(pr, on="tramo").merge(al, on="tramo")
     t["clase_pronosticada"] = t.clase_pred.map(C.CLASES)
+    # clase observada en 2025-T1 (disponible desde que se integró 2025)
+    pan = pd.read_parquet(C.PROCESSED / "panel_ieecc.parquet")
+    pan["trimestre"] = pan["trimestre"].astype(str)
+    obs = pan[pan.trimestre == "2025Q1"][["tramo", "clase"]]
+    if len(obs):
+        t = t.merge(obs, on="tramo", how="left")
+        t["clase_observada"] = t["clase"].map(C.CLASES)
+        t = t.drop(columns="clase")
     return t.drop(columns=["clase_pred", "puntaje"])
 
 

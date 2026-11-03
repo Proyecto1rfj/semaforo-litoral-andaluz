@@ -78,14 +78,14 @@ with tab_panel:
     with izq:
         st.subheader("Mapa semáforo")
         d["puntaje_size"] = d["puntaje"] - d["puntaje"].min() + 0.05
-        kw = dict(lat="lat", lon="lon", color="Prioridad", size="puntaje_size", size_max=16, zoom=7.2,
+        kw = dict(lat="lat", lon="lon", color="Prioridad", size="puntaje_size", size_max=16, zoom=7.2, center=dict(lat=float(d["lat"].mean()), lon=float(d["lon"].mean())),
                   hover_name="nombre", hover_data={"ranking": True, "puntaje": ":.2f", "ieecc": ":.2f",
                                                    "lat": False, "lon": False},
                   color_discrete_map={C.CLASES[k]: v for k, v in C.COLORES.items()}, height=520)
         try:
-            fig = px.scatter_map(d, map_style="open-street-map", **kw)
+            fig = px.scatter_map(d, map_style="carto-positron", **kw)
         except AttributeError:   # plotly < 5.24
-            fig = px.scatter_mapbox(d, mapbox_style="open-street-map", **kw)
+            fig = px.scatter_mapbox(d, mapbox_style="carto-positron", **kw)
         fig.update_layout(margin=dict(l=0, r=0, t=0, b=0), legend_title_text="")
         st.plotly_chart(fig, width="stretch")
 
@@ -132,7 +132,7 @@ with tab_panel:
     with f2:
         h = panel[panel["tramo"] == tramo].copy()
         h["fecha"] = pd.PeriodIndex(h["trimestre"], freq="Q").to_timestamp()
-        fig_h = px.line(h, x="fecha", y="ieecc", title="Evolución del IEECC 2000-2024", height=380)
+        fig_h = px.line(h, x="fecha", y="ieecc", title="Evolución del IEECC 2000-2025", height=380)
         for k, (y0, y1) in enumerate([(0, 1 / 3), (1 / 3, 2 / 3), (2 / 3, 1)]):
             fig_h.add_hrect(y0=y0, y1=y1, fillcolor=C.COLORES[k], opacity=0.08, line_width=0)
         fig_h.update_layout(margin=dict(l=0, r=0, t=40, b=0), yaxis_range=[0, 1], xaxis_title="")
@@ -140,7 +140,7 @@ with tab_panel:
     st.caption("Las franjas son orientativas: la clase se define por tercil dentro de cada trimestre.")
 
     # ---------------- mapa de calor tramo × trimestre
-    st.subheader("Mapa de calor: clase por tramo y trimestre (2000-2024)")
+    st.subheader("Mapa de calor: clase por tramo y trimestre (2000-2025)")
     hm = panel.assign(trimestre=panel["trimestre"].astype(str)).pivot(index="tramo", columns="trimestre", values="clase")
     nombres = panel.drop_duplicates("tramo").set_index("tramo")["nombre"]
     fig_hm = go.Figure(go.Heatmap(
@@ -159,12 +159,20 @@ with tab_metricas:
     st.dataframe(val, hide_index=True)
     st.subheader("Prueba 2022-2024 (modelos reentrenados con 2000-2021)")
     st.dataframe(prueba, hide_index=True)
+    fp = C.RESULTADOS / "oe3_prospectiva_2025.csv"
+    if fp.exists():
+        st.subheader("Prueba prospectiva 2025 (modelos reentrenados con 2000-2024)")
+        st.dataframe(pd.read_csv(fp), hide_index=True)
     mc = C.RESULTADOS / "oe3_matrices_confusion.csv"
     if mc.exists():
-        st.subheader(f"Matriz de confusión en prueba: {info['modelo_elegido']}")
-        m = pd.read_csv(mc)
-        m = m[m["modelo"] == info["modelo_elegido"]].pivot(index="real", columns="predicha", values="n")
-        st.dataframe(m.reindex(index=["baja", "media", "alta"], columns=["baja", "media", "alta"]))
+        mm = pd.read_csv(mc)
+        conj = mm["conjunto"].unique() if "conjunto" in mm else [None]
+        cols_m = st.columns(len(conj))
+        for col, cj in zip(cols_m, conj):
+            m = mm if cj is None else mm[mm["conjunto"] == cj]
+            m = m[m["modelo"] == info["modelo_elegido"]].pivot_table(index="real", columns="predicha", values="n", aggfunc="sum")
+            col.markdown(f"**Matriz de confusión ({cj or 'prueba'}): {info['modelo_elegido']}**")
+            col.dataframe(m.reindex(index=["baja", "media", "alta"], columns=["baja", "media", "alta"]))
     if "intervalos" in extra:
         st.subheader("Intervalos de confianza del 95 % (bootstrap por trimestres) y diferencia con la persistencia")
         st.dataframe(extra["intervalos"], hide_index=True)

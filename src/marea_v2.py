@@ -61,7 +61,7 @@ def prevista():
     """Marea astronómica prevista (máximo trimestral) por tramo, 2000-T1 a 2025-T1."""
     import utide
     filas, diarias = [], []
-    horas = pd.date_range("2000-01-01", "2025-03-31 23:00", freq="h")
+    horas = pd.date_range("2000-01-01", f"{int(C.FIN[:4]) + 1}-03-31 23:00", freq="h")
     for t in D.tramos().itertuples():
         ds = D._abrir("nivel", t.tramo)
         z = D._serie_celda(ds, "zos", t.lat, t.lon); D._ULTIMA_CELDA.clear()

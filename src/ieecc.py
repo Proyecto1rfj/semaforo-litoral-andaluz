@@ -119,14 +119,15 @@ def ejecutar() -> pd.DataFrame:
 
     C.RESULTADOS.mkdir(parents=True, exist_ok=True)
     w = pd.DataFrame({"iguales": pesos_iguales(), "entropia": pesos_entropia(panel)}).round(3)
-    sens, por_tramo = sensibilidad(panel)
+    est = panel[panel["anio"] <= getattr(C, "ANIO_CIERRE_ESTUDIO", 9999)].reset_index(drop=True)
+    sens, por_tramo = sensibilidad(est)
     w.to_csv(C.RESULTADOS / "oe2_pesos.csv")
     sens.to_csv(C.RESULTADOS / "oe2_sensibilidad.csv", index=False)
     por_tramo.to_csv(C.RESULTADOS / "oe2_tramos_sensibles.csv")
     print("OE2 · Pesos\n", w.to_string())
     print("\nSensibilidad (meta Tabla 1: < 20 % de cambio de clase por escenario)\n", sens.to_string(index=False))
     print("\nTramos más sensibles (cercanos a los cortes):\n", por_tramo.head(5).to_string())
-    print(f"\nEstabilidad temporal (informativa): {tasa_cambio_temporal(panel):.1f} % de tramos cambia de clase entre trimestres")
+    print(f"\nEstabilidad temporal (informativa): {tasa_cambio_temporal(est):.1f} % de tramos cambia de clase entre trimestres")
     return panel
 
 

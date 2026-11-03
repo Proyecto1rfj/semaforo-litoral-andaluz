@@ -63,6 +63,7 @@ def intervalos():
 
 def tendencias():
     panel = pd.read_parquet(C.PROCESSED / "panel_ieecc.parquet")
+    panel = panel[panel["anio"] <= getattr(C, "ANIO_CIERRE_ESTUDIO", 9999)]
     filas = []
     for (t, ind), g in panel.melt(id_vars=["tramo", "anio"], value_vars=list(C.INDICADORES)).groupby(["tramo", "variable"]):
         a = g.groupby("anio")["value"].mean()

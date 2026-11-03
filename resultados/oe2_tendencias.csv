@@ -20,7 +20,7 @@ T04,hs_p95,-0.2333,0.1076,-0.0788,False
 T04,nivel_p95,0.2733,0.0579,0.0183,False
 T04,viento_p95,-0.26,0.0718,-0.262,False
 T05,corriente_media,0.06,0.6943,0.0006,False
-T05,dias_temporal_pleamar,0.1256,0.3958,0.2639,False
+T05,dias_temporal_pleamar,0.1256,0.3958,0.244,False
 T05,hs_p95,-0.22,0.1299,-0.071,False
 T05,nivel_p95,0.2733,0.0579,0.0161,False
 T05,viento_p95,-0.2733,0.0579,-0.2512,False
@@ -85,7 +85,7 @@ T17,hs_p95,-0.1267,0.3914,-0.0655,False
 T17,nivel_p95,0.3267,0.0223,0.0208,True
 T17,viento_p95,-0.12,0.4176,-0.1645,False
 T18,corriente_media,0.1533,0.2966,0.0005,False
-T18,dias_temporal_pleamar,-0.0348,0.8135,-0.0,False
+T18,dias_temporal_pleamar,-0.0209,0.8875,-0.0,False
 T18,hs_p95,-0.1067,0.473,-0.0514,False
 T18,nivel_p95,0.3333,0.0196,0.0212,True
 T18,viento_p95,-0.0867,0.5631,-0.1098,False

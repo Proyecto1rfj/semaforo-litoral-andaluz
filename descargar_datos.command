@@ -20,7 +20,7 @@ fi
 source .venv/bin/activate
 if [ ! -f .venv/.instalado ]; then
   echo ">> Instalando librerías (solo la primera vez, unos minutos)"
-  pip install --upgrade pip -q && pip install -r requirements.txt -q && touch .venv/.instalado
+  pip install --upgrade pip -q && pip install -r requirements_completo.txt -q && touch .venv/.instalado
 fi
 
 echo ">> REDMAR (mareógrafos Huelva, Bonanza y Tarifa)"

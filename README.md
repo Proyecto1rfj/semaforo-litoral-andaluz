@@ -18,7 +18,7 @@ Esta rama sigue el Capítulo 1 versión 3. La versión anterior quedó en la ram
 - **Tendencias 2000-2024:** el nivel del mar no astronómico sube en 15 de 23 tramos (mediana +1,9 cm por década) y el viento baja en 5.
 - **Pendiente:** enlace al zip de datos crudos.
 
-Qué cambió respecto del Capítulo 1 entregado y por qué es más robusto: [`docs/cambios_capitulo1.md`](docs/cambios_capitulo1.md). Detalle de las pruebas que llevaron a esta versión: [`docs/laboratorio_v3_historial.md`](docs/laboratorio_v3_historial.md).
+Detalle de las pruebas que llevaron a esta versión: [`docs/laboratorio_v3_historial.md`](docs/laboratorio_v3_historial.md).
 
 ## Cómo correrlo
 
@@ -29,7 +29,7 @@ git clone https://github.com/Proyecto1rfj/semaforo-litoral-andaluz.git
 cd semaforo-litoral-andaluz
 python3 -m venv .venv
 source .venv/bin/activate          # en Windows: .venv\Scripts\activate
-pip install -r requirements.txt
+pip install -r requirements_completo.txt
 python ejecutar_todo.py            # OE1 → OE2 → OE3 → intervalos, tendencias y alerta (unos 5 minutos)
 streamlit run app.py               # OE4: panel en el navegador
 ```
@@ -103,7 +103,7 @@ Pasos:
 
 ```bash
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements_completo.txt
 copernicusmarine login                 # una vez, con el usuario de marine.copernicus.eu
 python -m src.descarga copernicus      # cajas por tramo × 4 grupos (reanudable)
 python -m src.celdas_10km              # una celda de mar por tramo de 10 km
