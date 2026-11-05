@@ -1,22 +1,21 @@
 # Semáforo predictivo de exposición climática del litoral atlántico andaluz
 
-Proyecto de Grado MII712, Magíster en Ingeniería Industrial UNAB · Grupo 3 (Juan Pablo Mestre, Rubén Ugarte, Felipe Avendaño).
+Actividad Final de Grado (MII715), Magíster en Ingeniería Industrial UNAB · Grupo 2 (Juan Pablo Mestre, Rubén Ugarte, Felipe Avendaño).
 
-El semáforo ordena los tramos del litoral atlántico de Andalucía (de la desembocadura del Guadiana a Tarifa) según su exposición climática esperada en el trimestre siguiente, para focalizar la inspección y el mantenimiento preventivo. Usa solo datos abiertos (Copernicus Marine y REDMAR de Puertos del Estado), un índice de exposición por tramo y trimestre (IEECC) y modelos de clasificación y ordenamiento evaluados con partición temporal frente a una línea base de persistencia.
+El semáforo ordena los 23 tramos del litoral atlántico de Andalucía (de la desembocadura del Guadiana a Tarifa) según su exposición climática esperada en el trimestre siguiente, para focalizar la inspección y el mantenimiento preventivo. Usa solo datos abiertos (reanálisis IBI de Copernicus Marine, validado con mareógrafos REDMAR y boyas de Puertos del Estado), un índice de exposición por tramo y trimestre (IEECC) y modelos de clasificación y ordenamiento evaluados con partición temporal frente a una línea base de persistencia. Mide exposición relativa: no evalúa el estado de las estructuras ni predice daños.
 
-## Estado actual (versión 3, 9 de octubre de 2026)
+Marco metodológico: Design Science Research (versión liviana) con CRISP-ML(Q) como proceso técnico y enfoque mixto con predominio cuantitativo.
 
-Esta rama sigue el Capítulo 1 versión 3. La versión anterior quedó en la rama `version-1`.
+## Estado actual (Capítulo II, 5 de noviembre de 2026)
 
-- Corre de punta a punta con **datos reales** 2000 a 2024 para **23 tramos de unos 10 km** (Capítulo 1). La segmentación anterior de 40 puntos quedó en la rama `tramos-40`; la comparación está en [`docs/segmentacion_10km.md`](docs/segmentacion_10km.md).
-- **La marea astronómica se trata en tres capas.** Se resta del nivel del mar y de las corrientes (análisis armónico con UTide, ajustado con 2000-2018), se cuentan los días de temporal en pleamar viva como quinto indicador y la pleamar viva prevista para el trimestre siguiente entra al modelo, porque se conoce de antemano.
-- **OE1:** 100 % de cobertura; cada tramo tiene su propia celda del reanálisis. El residuo meteorológico coincide con el de los mareógrafos (correlación 0,93 en Huelva, 0,88 en Bonanza y 0,81 en Tarifa).
-- **OE2:** 3 de los 10 escenarios originales cumplen la meta de menos de 20 % de cambio de clase (más los 2 del nuevo indicador); los saltos entre alta y baja no pasan de 5,3 %. Se informa como limitación: sin la marea, la exposición del litoral es pareja entre tramos.
-- **OE3:** en la prueba 2022-2024, LambdaMART supera a la persistencia en exactitud balanceada (0,635 contra 0,595) y en sensibilidad de la clase alta (0,677 contra 0,646), y queda apenas bajo en NDCG de los 6 primeros (0,954 contra 0,959). Nada es estadísticamente significativo y en validación no la supera en ambas métricas, así que la persistencia queda como referencia operativa.
-- **Validación con daños reales** (`src/validacion_danos.py`, obras de emergencia por temporal 2015-2024, fuentes en `data/validacion/eventos_temporales.csv`): el trimestre del daño queda en el percentil 86 de la historia del propio tramo (permutación, p < 0,001), pero solo el 31 % de los tramos dañados estaba en prioridad alta frente al resto (azar: 33 %). El índice detecta cuándo la exposición es extrema; dónde ocurre el daño depende también de la vulnerabilidad de cada frente, que el índice no mide.
-- **OE4:** panel con ranking, mapa semáforo, mapa de calor, ficha por tramo y alerta del trimestre siguiente.
-- **Tendencias 2000-2024:** el nivel del mar no astronómico sube en 15 de 23 tramos (mediana +1,9 cm por década) y el viento baja en 5.
-- **Pendiente:** enlace al zip de datos crudos.
+- **Datos reales** 2000 a 2024 para modelar y 2025 como prueba prospectiva, en **23 tramos de unos 10 km**; cada tramo tiene su propia celda del reanálisis. La segmentación anterior de 40 puntos quedó en la rama `tramos-40` ([`docs/segmentacion_10km.md`](docs/segmentacion_10km.md)).
+- **La marea astronómica se trata en tres capas.** Se resta del nivel del mar y de las corrientes (UTide, ajustado con 2000-2018), se cuentan los días de temporal en pleamar viva como quinto indicador y la pleamar viva prevista para el trimestre siguiente entra al modelo.
+- **OE1:** 100 % de cobertura. El residuo meteorológico del nivel del mar coincide con REDMAR (correlación 0,93 en Huelva, 0,88 en Bonanza y 0,81 en Tarifa) y el oleaje con tres boyas de Puertos del Estado (correlación 0,94 a 0,96; 97 % a 100 % de los extremos detectados).
+- **OE2:** 5 de los 12 escenarios de sensibilidad cumplen la meta de menos de 20 % de cambio de clase; los saltos entre alta y baja no pasan de 5,3 %.
+- **OE3:** en la prueba 2022-2024, LambdaMART supera a la persistencia en exactitud balanceada (0,627 contra 0,602) y en sensibilidad de la clase alta (0,677 contra 0,646), y queda apenas bajo en NDCG de los 6 primeros (0,953 contra 0,959). En validación no la supera en ambas métricas, así que la persistencia queda como referencia operativa (plan B). En la prueba prospectiva 2025, LambdaMART y XGBoost sí la superan (LambdaMART: NDCG 0,958 contra 0,945; sensibilidad 0,750 contra 0,500).
+- **Cambios de clase y SHAP:** LambdaMART acierta 43 % de los cambios de clase en 2022-2024 y 52 % en 2025. En su explicación SHAP pesan sobre todo las corrientes (32 %) y el oleaje (23 % a 26 %).
+- **Validación con daños reales** (`src/validacion_danos.py`): el índice detecta cuándo la exposición es extrema; dónde ocurre el daño depende también de la vulnerabilidad de cada frente, que el índice no mide.
+- **OE4:** panel con ranking, mapa semáforo, mapa de calor, ficha por tramo con SHAP, alerta del trimestre siguiente y pestaña de desempeño.
 
 Detalle de las pruebas que llevaron a esta versión: [`docs/laboratorio_v3_historial.md`](docs/laboratorio_v3_historial.md).
 
@@ -71,10 +70,12 @@ Fuentes: E.U. Copernicus Marine Service Information (reanálisis IBI de oleaje y
 | `src/modelado.py` | OE3 | RF, SVM, XGBoost y LambdaMART contra persistencia y clase mayoritaria; selección en validación; cambios de clase; SHAP |
 | `src/analisis.py` | OE2-OE4 | Intervalos de confianza por bootstrap, tendencias de Mann-Kendall y alerta del panel |
 | `src/validacion_danos.py` | OE2 | Validación del índice con daños documentados por temporales (en el espacio y en el tiempo) |
+| `src/validacion_boya.py` | OE1 | Validación del oleaje del reanálisis con boyas de Puertos del Estado (doble clic: `validar_boya.command`) |
+| `src/analisis_shap.py` | OE3 | SHAP de LambdaMART y XGBoost en las pruebas 2022-2024 y 2025 (doble clic: `analizar_shap.command`) |
 | `app.py` | OE4 | Panel: mapa semáforo, ranking, ficha (IEECC, clases, SHAP y alerta), mapa de calor y métricas |
 | `src/datos_sinteticos.py` | (apoyo) | Datos de prueba para correr sin descargas |
 | `data/` | | Datos procesados reales |
-| `docs/` | | Resúmenes para el grupo, historial del laboratorio y vista estática del semáforo |
+| `docs/` | | Historial del laboratorio, segmentación, cambios del Capítulo 1 y vista estática del semáforo |
 | `resultados/` | | Métricas, intervalos, tendencias, alerta, predicciones, SHAP y modelo elegido |
 
 ## Decisiones incorporadas (Capítulo 1 versión 3)
@@ -95,9 +96,10 @@ Fuentes: E.U. Copernicus Marine Service Information (reanálisis IBI de oleaje y
 |---|---|---|
 | Copernicus Marine, reanálisis IBI (oleaje, 1/36°, horario) | Hs (VHM0), Tp (VTPK), dirección | Automático, con cuenta gratuita |
 | Copernicus Marine, reanálisis IBI (física, horario) | Nivel del mar (zos) y corrientes de superficie (uo, vo) | Automático, misma cuenta |
-| Copernicus IBI, tensión del viento | Viento (fuente principal; SIMAR solo como contraste) | Automático, misma cuenta |
+| Copernicus IBI, tensión del viento | Viento | Automático, misma cuenta |
+| Copernicus Marine in situ (IBI) | Oleaje medido en boyas de Puertos del Estado (Golfo de Cádiz, Cádiz y Sevilla) para validar | Automático, misma cuenta |
 | REDMAR (THREDDS de Puertos del Estado) | Nivel del mar observado en Huelva, Bonanza y Tarifa, desde 2007 | Automático, sin cuenta |
-| SIMAR (Portus) | Oleaje y viento por nodo, desde 1958 | Manual, punto a punto en Portus |
+| SIMAR (Portus) | Descartado en el Capítulo II: es un retroanálisis (otro modelo) y solo se descarga a mano | — |
 
 Pasos:
 

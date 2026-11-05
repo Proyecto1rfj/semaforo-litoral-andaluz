@@ -1,0 +1,29 @@
+modelo,bloque,indicador,peso_relativo
+LambdaMART,prueba 2022-2024,Corrientes,0.316
+LambdaMART,prueba 2022-2024,Oleaje,0.263
+LambdaMART,prueba 2022-2024,Viento,0.204
+LambdaMART,prueba 2022-2024,Nivel del mar no astronómico,0.139
+LambdaMART,prueba 2022-2024,Trimestre del año,0.053
+LambdaMART,prueba 2022-2024,Pleamar viva prevista (t+1),0.018
+LambdaMART,prueba 2022-2024,Temporal en pleamar viva,0.007
+LambdaMART,prospectiva 2025,Corrientes,0.32
+LambdaMART,prospectiva 2025,Oleaje,0.232
+LambdaMART,prospectiva 2025,Viento,0.195
+LambdaMART,prospectiva 2025,Nivel del mar no astronómico,0.175
+LambdaMART,prospectiva 2025,Trimestre del año,0.057
+LambdaMART,prospectiva 2025,Temporal en pleamar viva,0.011
+LambdaMART,prospectiva 2025,Pleamar viva prevista (t+1),0.011
+XGBoost,prueba 2022-2024,Corrientes,0.333
+XGBoost,prueba 2022-2024,Viento,0.234
+XGBoost,prueba 2022-2024,Oleaje,0.18
+XGBoost,prueba 2022-2024,Nivel del mar no astronómico,0.148
+XGBoost,prueba 2022-2024,Trimestre del año,0.076
+XGBoost,prueba 2022-2024,Pleamar viva prevista (t+1),0.017
+XGBoost,prueba 2022-2024,Temporal en pleamar viva,0.012
+XGBoost,prospectiva 2025,Corrientes,0.305
+XGBoost,prospectiva 2025,Viento,0.226
+XGBoost,prospectiva 2025,Oleaje,0.16
+XGBoost,prospectiva 2025,Nivel del mar no astronómico,0.159
+XGBoost,prospectiva 2025,Trimestre del año,0.113
+XGBoost,prospectiva 2025,Pleamar viva prevista (t+1),0.027
+XGBoost,prospectiva 2025,Temporal en pleamar viva,0.01

@@ -22,3 +22,6 @@ resultados/*.joblib
 
 # netCDF de una celda por tramo (se arman con python -m src.celdas_10km desde data/raw/copernicus)
 data/raw/copernicus_10km/
+
+# Descargas de boyas para la validación del oleaje (se regeneran con validar_boya.command)
+data/raw/boya/

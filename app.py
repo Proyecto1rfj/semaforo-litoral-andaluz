@@ -37,7 +37,8 @@ sintetico = C.MODO == "sintetico"
 
 # ---------------- cabecera
 st.title("Semáforo predictivo de exposición climática")
-st.caption("Litoral atlántico andaluz · prioridad relativa de los tramos para el trimestre siguiente")
+st.caption("Litoral atlántico andaluz · prioridad relativa de inspección por exposición climática para el trimestre siguiente. "
+           "No evalúa el estado de las estructuras ni predice daños.")
 if sintetico:
     st.warning("Datos SINTÉTICOS de prueba. Los resultados no son reales ni se reportan.")
 
